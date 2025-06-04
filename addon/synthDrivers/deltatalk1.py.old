@@ -1,0 +1,315 @@
+import os
+import ctypes
+from ctypes import *
+from synthDriverHandler import SynthDriver as SynthDriverBase
+from synthDriverHandler import synthDoneSpeaking, SynthDriver, synthIndexReached, VoiceInfo
+from logHandler import log
+import logging
+import time
+from speech.commands import IndexCommand, PitchCommand, RateCommand, VolumeCommand, CharacterModeCommand
+
+# Dicionário de erros do DeltaTalk
+ERROR_CODES = {
+	0: "TTS_SUCCESSFUL",
+	-1: "TTS_NOT_INITIALIZED",
+	-5: "TTS_FILE_OPEN_ERROR",
+	-7: "TTS_INIT_ENGINE_ERROR",
+	-13: "TTS_WAVEOUT_NOT_AVAILABLE",
+	-103: "TTS_DSP_NOT_FOUND",
+	-106: "TTS_NO_LICENSE",
+}
+
+DSP_MODES = {
+	"MULTIMEDIA": 0,
+	"TELEPHONY": 1
+}
+
+VOICES = {
+	"br1": "DeltaTalk - Marcelo (16 kHz)",
+	"br2": "DeltaTalk - Paula (22 kHz)",
+	"br3": "DeltaTalk - José (22 kHz)"
+}
+
+VOICE_MAP = {
+	"br1": 0,  # Marcelo
+	"br3": 1,  # José
+	"br2": 2   # Paula
+}
+
+DT_MULTIPLIER = 20 / 100
+
+def convert_nvda_to_dt(value):
+	return max(1, min(20, int(value * DT_MULTIPLIER)))
+
+# Configuração global da licença (executada uma vez no carregamento do módulo)
+addon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "deltatalk")
+dll_path = os.path.join(addon_path, "Dtalk32T.dll")
+
+if os.path.isfile(dll_path):
+	try:
+		dt = ctypes.WinDLL(dll_path)
+		license_key = "DTK-300-29314-34564-04464-731".encode("ansi")
+		license_result = dt.TTSENG_SetLicense(c_char_p(license_key))
+		if license_result < 0:
+			logging.error(f"Erro ao configurar licença global: {ERROR_CODES.get(license_result, 'Erro desconhecido')}")
+		else:
+			logging.info(f"Licença global configurada corretamente. Instâncias permitidas: {license_result}")
+	except Exception as e:
+		logging.error(f"Erro ao carregar DLL ou configurar licença global: {e}")
+else:
+	logging.error(f"Dtalk32T.dll não encontrado em {dll_path}")
+
+class SynthDriver(SynthDriverBase):
+	name = "deltatalk"
+	description = _("DeltaTalk")
+	language = "pt-BR"
+
+	supportedSettings = [
+		SynthDriver.VoiceSetting(),
+		SynthDriver.RateSetting(),
+		SynthDriver.PitchSetting(),
+		SynthDriver.VolumeSetting(),
+	]
+
+	supportedCommands = {
+		IndexCommand,
+		RateCommand,
+		PitchCommand,
+		VolumeCommand,
+		CharacterModeCommand,
+	}
+
+	supportedNotifications = {synthIndexReached, synthDoneSpeaking}
+
+	@classmethod
+	def check(cls):
+		logging.debug(f"check: Verificando caminho: {dll_path}")
+		if not os.path.isfile(dll_path):
+			logging.debug(f"check: Dtalk32T.dll não encontrado")
+			return False
+		try:
+			ctypes.WinDLL(dll_path)
+			logging.debug("check: Dtalk32T.dll carregado com sucesso")
+			return True
+		except Exception as e:
+			logging.debug(f"check: Falha ao carregar DLL: {e}")
+			return False
+
+	def __init__(self):
+		super(SynthDriver, self).__init__()
+		self._rate = 50
+		self._pitch = 50
+		self._volume = 100
+		self._voice = "br1"
+		self._lastIndex = 0
+		self.instancia = None
+
+		logging.debug(f"__init__: Caminho da DLL: {dll_path}")
+
+		if hasattr(os, "add_dll_directory"):
+			os.add_dll_directory(addon_path)
+		else:
+			original_path = os.environ["PATH"]
+			os.environ["PATH"] = addon_path + os.pathsep + original_path
+
+		try:
+			self.dt = ctypes.WinDLL(dll_path)
+			logging.debug("__init__: DLL carregada com sucesso")
+		except Exception as e:
+			logging.error(f"Erro ao carregar DLL DeltaTalk em {dll_path}: {e}")
+			self.dt = None
+			raise RuntimeError(f"Falha ao carregar a DLL Dtalk32T.dll: {e}")
+		finally:
+			if not hasattr(os, "add_dll_directory"):
+				os.environ["PATH"] = original_path
+
+		if not self._initialize_tts():
+			raise RuntimeError("Falha ao inicializar o sintetizador DeltaTalk")
+
+	def _initialize_tts(self):
+		if not self.dt:
+			logging.error("Tentativa de inicializar o TTS sem a DLL carregada.")
+			return False
+
+		addon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "deltatalk")
+		original_cwd = os.getcwd()
+		os.chdir(addon_path)
+
+		try:
+			logging.debug("Iniciando inicialização do TTS")
+			self.instancia = self.dt.TTSENG_Init(False, None, DSP_MODES["MULTIMEDIA"])
+			if self.instancia <= 0:
+				logging.error(f"Erro ao inicializar o TTS: {ERROR_CODES.get(self.instancia, 'Erro desconhecido')}")
+				self.instancia = None
+				return False
+			logging.debug(f"DeltaTalk inicializado. Instância: {self.instancia}")
+			self._apply_settings()
+			return True
+		except Exception as e:
+			logging.error(f"Erro ao inicializar o TTS: {e}")
+			self.instancia = None
+			return False
+		finally:
+			os.chdir(original_cwd)
+
+	def _apply_settings(self):
+		if self.instancia:
+			dt_rate = convert_nvda_to_dt(self._rate)
+			dt_volume = convert_nvda_to_dt(self._volume)
+			dt_pitch = convert_nvda_to_dt(self._pitch)
+			result = self.dt.TTSENG_SetMode(self.instancia, dt_rate, dt_volume, dt_pitch)
+			if result != 0:
+				logging.error(f"Erro ao aplicar configurações: {ERROR_CODES.get(result, 'Erro desconhecido')} ({result})")
+			else:
+				logging.debug(f"Configurações aplicadas: rate={dt_rate}, volume={dt_volume}, pitch={dt_pitch}")
+
+			if self._voice in VOICE_MAP:
+				voice_id = VOICE_MAP[self._voice]
+				voice_result = self.dt.TTSENG_SetVoice(self.instancia, voice_id, 10)
+				if voice_result != 0:
+					logging.error(f"Erro ao aplicar voz: {ERROR_CODES.get(voice_result, 'Erro desconhecido')} ({voice_result})")
+				else:
+					logging.debug(f"Voz aplicada: {self._voice} (ID: {voice_id})")
+
+	def speak(self, speechSequence):
+		if not self.instancia:
+			logging.error("Tentativa de fala sem instância inicializada.")
+			return
+
+		base_pitch = self._pitch
+		char_mode = False
+		for item in speechSequence:
+			if isinstance(item, CharacterModeCommand):
+				char_mode = item.state
+			elif isinstance(item, str):
+				text = item.strip()
+				if not text:
+					continue
+				if char_mode:
+					for char in text:
+						self._speak_or_append(char)
+				else:
+					self._speak_or_append(text)
+				if self._pitch != base_pitch:
+					self._set_pitch(base_pitch)
+			elif isinstance(item, IndexCommand):
+				synthIndexReached.notify(synth=self, index=item.index)
+			elif isinstance(item, (PitchCommand, RateCommand, VolumeCommand)):
+				self._apply_command(item)
+
+		synthDoneSpeaking.notify(synth=self)
+
+	def _speak_or_append(self, text):
+		if not text:
+			return
+		try:
+			encoded_text = text.encode("ansi", errors="replace")
+			play_result = self.dt.TTSENG_PlayText(self.instancia, c_char_p(encoded_text), True)
+			if play_result == -2:  # TTS_BUSY
+				append_result = self.dt.TTSENG_AppendText(self.instancia, c_char_p(encoded_text))
+				if append_result != 0:
+					logging.error(f"Erro ao anexar texto: {ERROR_CODES.get(append_result, 'Erro desconhecido')}")
+				else:
+					logging.debug(f"Texto anexado: {text}")
+			elif play_result != 0:
+				logging.error(f"Erro ao falar texto: {ERROR_CODES.get(play_result, 'Erro desconhecido')}")
+			else:
+				logging.debug(f"Texto falado: {text}")
+		except Exception as e:
+			logging.error(f"Erro ao processar texto: {e}")
+
+	def _apply_command(self, command):
+		if isinstance(command, PitchCommand):
+			current_pitch = self._pitch
+			new_pitch = max(0, min(100, current_pitch + command.offset))
+			self._set_pitch(new_pitch)
+		elif isinstance(command, RateCommand):
+			self._set_rate(command.value)
+		elif isinstance(command, VolumeCommand):
+			self._set_volume(command.value)
+
+	def _get_rate(self):
+		return self._rate
+
+	def _set_rate(self, value):
+		self._rate = value
+		if self.instancia:
+			dt_rate = convert_nvda_to_dt(value)
+			dt_volume = convert_nvda_to_dt(self._volume)
+			dt_pitch = convert_nvda_to_dt(self._pitch)
+			self.dt.TTSENG_SetMode(self.instancia, dt_rate, dt_volume, dt_pitch)
+			logging.info(f"Velocidade configurada para {dt_rate} (convertido de {value})")
+
+	def _get_pitch(self):
+		return self._pitch
+
+	def _set_pitch(self, value):
+		self._pitch = value
+		if self.instancia:
+			dt_rate = convert_nvda_to_dt(self._rate)
+			dt_volume = convert_nvda_to_dt(self._volume)
+			dt_pitch = convert_nvda_to_dt(value)
+			self.dt.TTSENG_SetMode(self.instancia, dt_rate, dt_volume, dt_pitch)
+			logging.info(f"Tom configurado para {dt_pitch} (convertido de {value})")
+
+	def _get_volume(self):
+		return self._volume
+
+	def _set_volume(self, value):
+		self._volume = value
+		if self.instancia:
+			dt_rate = convert_nvda_to_dt(self._rate)
+			dt_volume = convert_nvda_to_dt(value)
+			dt_pitch = convert_nvda_to_dt(self._pitch)
+			self.dt.TTSENG_SetMode(self.instancia, dt_rate, dt_volume, dt_pitch)
+			logging.info(f"Volume configurado para {dt_volume} (convertido de {value})")
+
+	@property
+	def voice(self):
+		return self._voice
+
+	@voice.setter
+	def voice(self, value):
+		if value in VOICES:
+			self._voice = value
+			if self.instancia:
+				voice_id = VOICE_MAP[value]
+				result = self.dt.TTSENG_SetVoice(self.instancia, voice_id, 10)
+				if result != 0:
+					logging.error(f"Erro ao configurar voz: {ERROR_CODES.get(result, 'Erro desconhecido')} ({result})")
+				else:
+					logging.info(f"Voz alterada para {VOICES[value]}")
+
+	@property
+	def availableVoices(self):
+		return {
+			key: VoiceInfo(
+				id=key,
+				displayName=VOICES[key],
+			) for key in VOICES
+		}
+
+	def pause(self, switch):
+		if switch:
+			self.dt.TTSENG_PauseText(self.instancia)
+		else:
+			self.dt.TTSENG_ResumeText(self.instancia)
+
+	def cancel(self):
+		if self.instancia:
+			self.dt.TTSENG_StopText(self.instancia)
+
+def terminate(self):
+	if self.instancia:
+		try:
+			self.dt.TTSENG_StopText(self.instancia)
+			result = self.dt.TTSENG_Close(self.instancia)
+			if result != 0:
+				logging.error(f"Erro ao fechar: {ERROR_CODES.get(result, 'Erro desconhecido')} ({result})")
+			else:
+				logging.debug("Sintetizador DeltaTalk encerrado com sucesso")
+		except Exception as e:
+			logging.error(f"Erro ao fechar o sintetizador: {e}")
+		finally:
+			self.instancia = None
+			self.dt = None

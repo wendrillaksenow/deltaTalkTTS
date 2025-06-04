@@ -1,0 +1,186 @@
+import os
+import ctypes
+import synthDriverHandler
+from synthDriverHandler import SynthDriver, VoiceInfo
+import queue
+from logHandler import log
+
+class DeltaTalkSynthDriver(SynthDriver):
+    name = "deltatalk"
+    description = "Micropower DeltaTalk TTS"
+
+    log.debug("Iniciando carregamento da DLL DeltaTalk...")
+
+    # Carregar a DLL do DeltaTalk
+    dll_path = os.path.join(os.path.dirname(__file__), 'deltatalk', 'Dtalk32t.dll')
+    try:
+        deltatalk = ctypes.WinDLL(dll_path)
+        log.debug("DLL DeltaTalk carregada com sucesso.")
+    except Exception as e:
+        log.error(f"Erro ao carregar a DLL DeltaTalk: {e}")
+
+    # Definir protótipos de função
+    try:
+        deltatalk.TTSENG_Init.argtypes = [ctypes.c_bool, ctypes.c_void_p, ctypes.c_int]
+        deltatalk.TTSENG_Init.restype = ctypes.c_int
+
+        deltatalk.TTSENG_SetVoice.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_int]
+        deltatalk.TTSENG_SetVoice.restype = ctypes.c_int
+
+        deltatalk.TTSENG_SetProsodyOptions.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
+        deltatalk.TTSENG_SetProsodyOptions.restype = ctypes.c_int
+
+        deltatalk.TTSENG_SetMode.argtypes = [ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int]
+        deltatalk.TTSENG_SetMode.restype = ctypes.c_int
+
+        deltatalk.TTSENG_PlayText.argtypes = [ctypes.c_int, ctypes.c_char_p, ctypes.c_int]
+        deltatalk.TTSENG_PlayText.restype = ctypes.c_int
+
+        deltatalk.TTSENG_StopText.argtypes = [ctypes.c_int]
+        deltatalk.TTSENG_StopText.restype = ctypes.c_int
+
+        deltatalk.TTSENG_PauseText.argtypes = [ctypes.c_int]
+        deltatalk.TTSENG_PauseText.restype = ctypes.c_int
+
+        deltatalk.TTSENG_ResumeText.argtypes = [ctypes.c_int]
+        deltatalk.TTSENG_ResumeText.restype = ctypes.c_int
+
+        log.debug("Protótipos de função definidos com sucesso.")
+    except Exception as e:
+        log.error(f"Erro ao definir protótipos de função: {e}")
+
+    def __init__(self):
+        log.debug("Iniciando DeltaTalkSynthDriver...")
+        super(DeltaTalkSynthDriver, self).__init__()
+        try:
+            self.instance = self.deltatalk.TTSENG_Init(True, None, 16000)
+            log.debug(f"Instância do sintetizador inicializada com ID {self.instance}.")
+        except Exception as e:
+            log.error(f"Erro ao inicializar instância do sintetizador: {e}")
+        
+        self.voice = 0  # VOICE_MASC1
+        self.vocal_tract = 0
+        self.rate = 100
+        self.volume = 100
+        self.pitch = 100
+        self.queue = queue.Queue()
+        self._isSpeaking = False
+        self.setVoice(self.voice, self.vocal_tract)
+        self.setProsody(self.rate, self.volume, self.pitch)
+
+    def terminate(self):
+        log.debug("Terminando DeltaTalkSynthDriver...")
+        try:
+            self.deltatalk.TTSENG_StopText(self.instance)
+            log.debug("DeltaTalkSynthDriver terminado com sucesso.")
+        except Exception as e:
+            log.error(f"Erro ao terminar DeltaTalkSynthDriver: {e}")
+
+    def speak(self, speechSequence):
+        log.debug("DeltaTalkSynthDriver começando a falar...")
+        self._isSpeaking = True
+        try:
+            for item in speechSequence:
+                if isinstance(item, str):
+                    self.deltatalk.TTSENG_PlayText(self.instance, item.encode('utf-8'), 0)
+                    log.debug(f"Texto falado: {item}")
+                elif isinstance(item, dict):
+                    if 'pitch' in item:
+                        self.setProsody(pitch=item['pitch'])
+                    if 'rate' in item:
+                        self.setProsody(rate=item['rate'])
+                    if 'volume' in item:
+                        self.setProsody(volume=item['volume'])
+            self._isSpeaking = False
+            log.debug("DeltaTalkSynthDriver terminou de falar.")
+        except Exception as e:
+            log.error(f"Erro ao falar: {e}")
+
+    def setVoice(self, voice, vocal_tract):
+        log.debug(f"Configurando voz: {voice}, vocal_tract: {vocal_tract}...")
+        try:
+            self.deltatalk.TTSENG_SetVoice(self.instance, voice, vocal_tract)
+            log.debug("Voz configurada com sucesso.")
+        except Exception as e:
+            log.error(f"Erro ao configurar voz: {e}")
+
+    def setProsody(self, rate=100, volume=100, pitch=100):
+        log.debug(f"Configurando prosódia: rate={rate}, volume={volume}, pitch={pitch}...")
+        self.rate = rate
+        self.volume = volume
+        self.pitch = pitch
+        try:
+            self.deltatalk.TTSENG_SetMode(self.instance, rate, volume, pitch)
+            log.debug("Prosódia configurada com sucesso.")
+        except Exception as e:
+            log.error(f"Erro ao configurar prosódia: {e}")
+
+    def pause(self):
+        log.debug("Pausando fala...")
+        try:
+            self.deltatalk.TTSENG_PauseText(self.instance)
+            log.debug("Fala pausada com sucesso.")
+        except Exception as e:
+            log.error(f"Erro ao pausar fala: {e}")
+
+    def resume(self):
+        log.debug("Resumindo fala...")
+        try:
+            self.deltatalk.TTSENG_ResumeText(self.instance)
+            log.debug("Fala resumida com sucesso.")
+        except Exception as e:
+            log.error(f"Erro ao resumir fala: {e}")
+
+    def cancel(self):
+        log.debug("Cancelando fala...")
+        try:
+            self.deltatalk.TTSENG_StopText(self.instance)
+            self.queue.queue.clear()
+            self._isSpeaking = False
+            log.debug("Fala cancelada com sucesso.")
+        except Exception as e:
+            log.error(f"Erro ao cancelar fala: {e}")
+
+    def isSpeaking(self):
+        return self._isSpeaking
+
+    def getAvailableVoices(self):
+        log.debug("Obtendo vozes disponíveis...")
+        voices = [
+            VoiceInfo(
+                id='VOICE_MASC1',
+                name='DeltaTalk - Marcelo (16 kHz)',
+                lang='pt-BR'
+            ),
+            VoiceInfo(
+                id='VOICE_MASC2',
+                name='DeltaTalk - José (22 kHz)',
+                lang='pt-BR'
+            ),
+            VoiceInfo(
+                id='VOICE_FEM1',
+                name='DeltaTalk - Paula (22 kHz)',
+                lang='pt-BR'
+            ),
+        ]
+        log.debug(f"Vozes disponíveis: {voices}")
+        return voices
+
+    def getVoice(self):
+        return self.voice
+
+    def getRate(self):
+        return self.rate
+
+    def getVolume(self):
+        return self.volume
+
+    def getPitch(self):
+        return self.pitch
+
+# Registro do driver de sintetizador DeltaTalk
+def synthDriverCreator():
+    return DeltaTalkSynthDriver()
+
+synthDriverHandler.registerSynthesizerModule(synthDriverCreator)
+log.debug("Driver de sintetizador DeltaTalk registrado com sucesso.")

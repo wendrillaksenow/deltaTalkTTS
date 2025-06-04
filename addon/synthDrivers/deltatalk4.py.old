@@ -1,0 +1,221 @@
+import ctypes
+from ctypes import *
+import synthDriverHandler
+from synthDriverHandler import synthDoneSpeaking, SynthDriver, synthIndexReached, VoiceInfo
+import logging
+import _thread
+import time
+from speech.commands import IndexCommand, PitchCommand, RateCommand, VolumeCommand
+
+# Dicionário de erros do DeltaTalk
+ERROR_CODES = {
+	0: "TTS_SUCCESSFUL",
+	-1: "TTS_NOT_INITIALIZED",
+	-5: "TTS_FILE_OPEN_ERROR",
+	-7: "TTS_INIT_ENGINE_ERROR",
+	-13: "TTS_WAVEOUT_NOT_AVAILABLE",
+	-103: "TTS_DSP_NOT_FOUND",
+	-106: "TTS_NO_LICENSE",
+}
+
+# Modos de DSP suportados
+DSP_MODES = {
+	"MULTIMEDIA": 0,
+	"TELEPHONY": 1
+}
+
+# Vozes disponíveis
+VOICES = {
+	"br1": "DeltaTalk - Marcelo (16 kHz)",  # Voz masculina antiga
+	"br2": "DeltaTalk - Paula (22 kHz)",	# Voz feminina
+	"br3": "DeltaTalk - José (22 kHz)"	  # Nova voz masculina
+}
+
+class SynthDriver(synthDriverHandler.SynthDriver):
+	name = "deltatalk"
+	description = _("DeltaTalk")
+	language = "pt-BR"  # Definição do idioma correto para o NVDA
+
+	supportedSettings = [
+		SynthDriver.VoiceSetting(),
+		SynthDriver.RateSetting(),
+		SynthDriver.PitchSetting(),
+		SynthDriver.VolumeSetting(),
+	]
+
+	supportedCommands = {
+		IndexCommand,
+		RateCommand,
+		PitchCommand,
+		VolumeCommand,
+	}
+
+	supportedNotifications = {synthIndexReached, synthDoneSpeaking}
+
+	@classmethod
+	def check(cls):
+		try:
+			ctypes.WinDLL("Dtalk32T.dll")
+			logging.debug("DLL DeltaTalk encontrada e carregada com sucesso.")
+			return True
+		except OSError:
+			logging.error("DLL DeltaTalk não encontrada.")
+			return False
+
+	def __init__(self):
+		super(SynthDriver, self).__init__()
+		self._rate = 10
+		self._pitch = 10
+		self._volume = 10
+		self._lastIndex = 0
+		self._voice = 0
+		self.instancia = None
+
+		try:
+			self.dt = ctypes.WinDLL("Dtalk32T.dll")
+		except Exception as e:
+			logging.error(f"Erro ao carregar DLL DeltaTalk: {e}")
+			self.dt = None
+			return
+
+		self._initialize_tts()
+
+	def _initialize_tts(self):
+		if not self.dt:
+			logging.error("Tentativa de inicializar o TTS sem a DLL carregada.")
+			return
+
+		logging.debug("Iniciando inicialização do TTS")
+		try:
+			self.instancia = self.dt.TTSENG_InitEx(False, None, DSP_MODES["MULTIMEDIA"], b"br1")
+			if self.instancia <= 0:
+				logging.error(f"Erro ao inicializar o TTS: {ERROR_CODES.get(self.instancia, 'Erro desconhecido')}")
+				self.instancia = None
+				return
+			logging.debug(f"DeltaTalk inicializado. Instância: {self.instancia}")
+		except Exception as e:
+			logging.error(f"Erro ao inicializar o TTS: {e}")
+			self.instancia = None
+			return
+
+		try:
+			result = self.dt.TTSENG_SetVoice(self.instancia, self._voice, 10)
+			if result != 0:
+				logging.error(f"Erro ao configurar voz: {ERROR_CODES.get(result, 'Erro desconhecido')}")
+		except Exception as e:
+			logging.error(f"Erro ao configurar voz: {e}")
+
+		try:
+			result = self.dt.TTSENG_SetMode(self.instancia, self._rate, self._volume, self._pitch)
+			if result != 0:
+				logging.error(f"Erro ao configurar modo: {ERROR_CODES.get(result, 'Erro desconhecido')}")
+		except Exception as e:
+			logging.error(f"Erro ao configurar modo: {e}")
+
+		try:
+			license_key = "DTK-300-29314-34564-04464-731".encode("ascii")
+			result = self.dt.TTSENG_SetLicense(c_char_p(license_key))
+			if result < 0:
+				logging.error(f"Erro ao configurar licença: {ERROR_CODES.get(result, 'Erro desconhecido')}")
+			else:
+				logging.info(f"Licença configurada corretamente. Instâncias permitidas: {result}")
+		except Exception as e:
+			logging.error(f"Erro ao configurar licença: {e}")
+
+	def speak(self, speechSequence):
+		if not self.instancia:
+			logging.error("Tentativa de fala sem instância inicializada.")
+			return
+
+		concatenated_text = " ".join(item for item in speechSequence if isinstance(item, str))
+
+		if concatenated_text.strip():
+			try:
+				encoded_text = f"{concatenated_text.strip()}".encode("cp1252")
+				result = self.dt.TTSENG_AppendText(self.instancia, c_char_p(encoded_text))
+				if result == 0:
+					logging.info(f"Texto falado com sucesso: {concatenated_text.strip()}")
+				else:
+					logging.error(f"Erro ao falar texto: {ERROR_CODES.get(result, 'Erro desconhecido')}")
+			except Exception as e:
+				logging.error(f"Erro ao falar texto: {e}")
+
+		# Monitorar o progresso da fala em um thread separado
+		_thread.start_new_thread(self._speechMonitor, (self._lastIndex, 0.1,))
+
+	def _speechMonitor(self, idx, delay):
+		try:
+			while self.dt.TTSENG_PlayText(self.instancia, c_char_p(b"."), True) == -2:  # "." para evitar buffer vazio
+				time.sleep(0.1)
+			synthDoneSpeaking.notify(synth=self)
+		except Exception as e:
+			logging.error(f"Erro no monitor de fala: {e}")
+
+	@property
+	def _get_lastIndex(self):
+
+		return self._lastIndex
+
+	@property
+	def voice(self):
+		return self._voice  # Retorna diretamente o identificador (ex: "br1")
+
+	@voice.setter
+	def voice(self, value):
+		if value in VOICES:  # Garante que a voz existe no dicionário
+			self._voice = value
+
+	@property
+	def availableVoices(self):
+		return [
+			VoiceInfo(
+				id=key,  # ID agora é "br1", "br2" ou "br3"
+				displayName=VOICES[key],
+			) for key in VOICES
+		]
+
+	@property
+	def rate(self):
+		return self._rate
+
+	@rate.setter
+	def rate(self, value):
+		self._rate = int(value)
+		if self.instancia:
+			self.dt.TTSENG_SetMode(self.instancia, self._rate, self._volume, self._pitch)
+
+	@property
+	def pitch(self):
+		return self._pitch
+
+	@pitch.setter
+	def pitch(self, value):
+		self._pitch = int(value)
+		if self.instancia:
+			self.dt.TTSENG_SetMode(self.instancia, self._rate, self._volume, self._pitch)
+
+	@property
+	def volume(self):
+		return self._volume
+
+	@volume.setter
+	def volume(self, value):
+		self._volume = int(value)
+		if self.instancia:
+			self.dt.TTSENG_SetMode(self.instancia, self._rate, self._volume, self._pitch)
+
+	def pause(self, switch):
+		if switch:
+			self.dt.TTSENG_PauseText(self.instancia)
+		else:
+			self.dt.TTSENG_ResumeText(self.instancia)
+
+	def cancel(self):
+		if self.instancia:
+			self.dt.TTSENG_StopText(self.instancia)
+
+	def terminate(self):
+		if self.instancia:
+			self.cancel()
+			self.dt.TTSENG_Close(self.instancia)
+			self.instancia = None

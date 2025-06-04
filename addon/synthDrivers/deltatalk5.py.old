@@ -1,0 +1,346 @@
+import synthDriverHandler
+from synthDriverHandler import SynthDriver, VoiceInfo, synthIndexReached, synthDoneSpeaking
+import speech
+import ctypes
+from ctypes import *
+import os.path
+import threading
+import time
+from collections import OrderedDict
+import _thread
+from logHandler import log
+import logging
+
+from speech.commands import (
+	IndexCommand,
+	PitchCommand,
+	RateCommand,
+	VolumeCommand,
+)
+
+class SynthDriver(synthDriverHandler.SynthDriver):
+	name = "deltatalk"
+	description = _("DeltaTalk")
+
+	# Constantes de vozes do sintetizador
+	VOICE_MASC1 = 0
+	VOICE_MASC2 = 1
+	VOICE_FEM1 = 2
+
+	# Constantes DSP_Freq
+	DSP_MULTIMEDIA = 0
+	DSP_TELEPHONY = 1
+
+	# Constantes de vozes e prosódia
+	MODEL_NORMAL = 0
+	MODEL_HHS = 1
+
+	EMP_NORMAL = 0
+	EMP_STRESS = 1
+
+	# Códigos de erro
+	TTS_SUCCESSFUL = 0
+	TTS_NOT_INITIALIZED = -1
+	TTS_BUSY = -2
+	TTS_BAD_COMMAND = -3
+	TTS_DSP_INIT_ERROR = -4
+	TTS_FILE_OPEN_ERROR = -5
+	TTS_FILE_WRITE_ERROR = -6
+	TTS_INIT_ENGINE_ERROR = -7
+	TTS_MEM_ALLOC_ERROR = -8
+	TTS_WAVEOUT_BUSY = -9
+	TTS_WAVEOUT_OPEN_ERROR = -10
+	TTS_WAVEOUT_WRITE_ERROR = -11
+	TTS_WAVEOUT_FORMAT_ERROR = -12
+	TTS_WAVEOUT_NOT_AVAILABLE = -13
+	TTS_WAVEOUT_ERROR = -14
+	TTS_WAVEOUT_MEM_ALLOC_ERROR = -15
+	TTS_VALUE_OUT_OF_RANGE = -16
+	TTS_PCM_FINISHED = -17
+	TTS_MBR_ERROR = -100
+	TTS_DSP_NOT_FOUND = -103
+	TTS_PROSODY_INIT_ERROR = -104
+	TTS_NO_LICENSE = -106
+
+	_voices = OrderedDict()
+	_voices["VOICE_MASC1"] = {"id": "0", "displayName": "DeltaTalk - Marcelo (16 kHz)"}
+	_voices["VOICE_MASC2"] = {"id": "1", "displayName": "DeltaTalk - José (22 kHz)"}
+	_voices["VOICE_FEM1"] = {"id": "2", "displayName": "DeltaTalk - Paula (22 kHz)"}
+
+	@classmethod
+	def check(cls):
+		dtPath = os.path.join(os.path.dirname(__file__), 'deltatalk\\Dtalk32t.dll')
+		logging.debug(f"DeltaTalk DLL Path: {dtPath}")
+		exists = os.path.exists(dtPath)
+		logging.debug(f"DeltaTalk DLL Exists: {exists}")
+		return exists
+
+	supportedSettings = [
+		SynthDriver.PitchSetting(),
+		SynthDriver.RateSetting(),
+		SynthDriver.VolumeSetting(),
+		SynthDriver.VoiceSetting(),
+	]
+
+	supportedCommands = {
+		IndexCommand,
+		PitchCommand,
+		RateCommand,
+		VolumeCommand,
+	}
+
+	supportedNotifications = {synthIndexReached, synthDoneSpeaking}
+
+	def __init__(self):
+		super(SynthDriver, self).__init__()
+		self._rate = 50
+		self._pitch = 50
+		self._volume = 100
+		self._voice = self.VOICE_MASC1
+		self._lastIndex = 0
+		self.instancia = None
+
+		# Garantir que estamos no diretório correto
+		addon_dir = os.path.dirname(__file__)
+		deltatalk_dir = os.path.join(addon_dir, 'deltatalk')
+		
+		# Listar todos os arquivos no diretório para diagnóstico
+		logging.debug(f"Conteúdo do diretório deltatalk: {os.listdir(deltatalk_dir) if os.path.exists(deltatalk_dir) else 'Diretório não encontrado'}")
+		
+		# Mudar para o diretório do DeltaTalk
+		os.chdir(deltatalk_dir)
+		
+		dtPath = os.path.join(deltatalk_dir, 'Dtalk32t.dll')
+		if not os.path.exists(dtPath):
+			logging.error(f"DLL não encontrada em: {dtPath}")
+			return
+
+		try:
+			self.dt = ctypes.windll.LoadLibrary(dtPath)
+			logging.debug(f"DeltaTalk DLL carregada: {self.dt}")
+			self._setup_dll_functions()
+			self._initialize_tts()
+		except Exception as e:
+			logging.error(f"Erro na inicialização: {e}")
+
+	def _setup_dll_functions(self):
+		"""Configura os protótipos das funções da DLL"""
+		self.dt.TTSENG_Init.argtypes = [c_bool, c_void_p, c_int]
+		self.dt.TTSENG_Init.restype = c_int
+
+		self.dt.TTSENG_InitEx.argtypes = [c_bool, c_void_p, c_int, c_char_p]
+		self.dt.TTSENG_InitEx.restype = c_int
+
+		self.dt.TTSENG_Close.argtypes = [c_int]
+		self.dt.TTSENG_Close.restype = c_int
+
+		self.dt.TTSENG_SetLicense.argtypes = [c_char_p]
+		self.dt.TTSENG_SetLicense.restype = c_int
+
+		self.dt.TTSENG_GetMode.argtypes = [c_int, POINTER(c_int), POINTER(c_int), POINTER(c_int)]
+		self.dt.TTSENG_GetMode.restype = c_int
+
+		self.dt.TTSENG_GetVoice.argtypes = [c_int, POINTER(c_int), POINTER(c_int)]
+		self.dt.TTSENG_GetVoice.restype = c_int
+
+		self.dt.TTSENG_SetMode.argtypes = [c_int, c_int, c_int, c_int]
+		self.dt.TTSENG_SetMode.restype = c_int
+
+		self.dt.TTSENG_GetProsodyOptions.argtypes = [c_int, POINTER(c_int), POINTER(c_int), POINTER(c_int), POINTER(c_int)]
+		self.dt.TTSENG_GetProsodyOptions.restype = c_int
+
+		self.dt.TTSENG_SetProsodyOptions.argtypes = [c_int, c_int, c_int, c_int, c_int]
+		self.dt.TTSENG_SetProsodyOptions.restype = c_int
+
+		self.dt.TTSENG_SetVoice.argtypes = [c_int, c_int, c_int]
+		self.dt.TTSENG_SetVoice.restype = c_int
+
+		self.dt.TTSENG_PauseText.argtypes = [c_int]
+		self.dt.TTSENG_PauseText.restype = c_int
+
+		self.dt.TTSENG_PlayText.argtypes = [c_int, c_char_p, c_bool]
+		self.dt.TTSENG_PlayText.restype = c_int
+
+		self.dt.TTSENG_ResumeText.argtypes = [c_int]
+		self.dt.TTSENG_ResumeText.restype = c_int
+
+		self.dt.TTSENG_StopText.argtypes = [c_int]
+		self.dt.TTSENG_StopText.restype = c_int
+
+	def _initialize_tts(self):
+		"""Inicializa o motor TTS"""
+		logging.debug("Iniciando inicialização do TTS")
+		
+		# Verifica o diretório de trabalho atual e lista arquivos
+		import os
+		current_dir = os.getcwd()
+		logging.debug(f"Diretório atual: {current_dir}")
+		try:
+			files = os.listdir(current_dir)
+			logging.debug(f"Arquivos no diretório: {files}")
+		except Exception as e:
+			logging.error(f"Erro ao listar arquivos: {e}")
+		
+		# Tenta diferentes modos de inicialização
+		logging.debug("Tentando inicialização com DSP_MULTIMEDIA")
+		try:
+			self.instancia = self.dt.TTSENG_Init(False, None, self.DSP_MULTIMEDIA)
+			logging.debug(f"Resultado da inicialização DSP_MULTIMEDIA: {self.instancia}")
+		except Exception as e:
+			logging.error(f"Erro na inicialização DSP_MULTIMEDIA: {e}")
+			self.instancia = -1
+		
+		if self.instancia <= 0:
+			logging.debug("Primeira tentativa falhou, tentando com DSP_TELEPHONY")
+			try:
+				self.instancia = self.dt.TTSENG_Init(False, None, self.DSP_TELEPHONY)
+				logging.debug(f"Resultado da inicialização DSP_TELEPHONY: {self.instancia}")
+			except Exception as e:
+				logging.error(f"Erro na inicialização DSP_TELEPHONY: {e}")
+				self.instancia = -1
+		
+		if self.instancia <= 0:
+			logging.debug("Segunda tentativa falhou, tentando com caminho explícito")
+			dtPath = os.path.abspath(os.path.join(os.path.dirname(__file__), 'deltatalk'))
+			try:
+				old_dir = os.getcwd()
+				os.chdir(dtPath)
+				self.instancia = self.dt.TTSENG_Init(False, None, self.DSP_MULTIMEDIA)
+				logging.debug(f"Resultado da inicialização com caminho explícito: {self.instancia}")
+				os.chdir(old_dir)
+			except Exception as e:
+				logging.error(f"Erro ao mudar diretório: {e}")
+				self.instancia = -1
+		
+		logging.debug(f"Instância após tentativas de inicialização: {self.instancia}")
+		
+		# Mapeia os códigos de erro conhecidos
+		error_codes = {
+			-1: "TTS_NOT_INITIALIZED",
+			-4: "TTS_DSP_INIT_ERROR",
+			-5: "TTS_FILE_OPEN_ERROR",
+			-7: "TTS_INIT_ENGINE_ERROR",
+			-13: "TTS_WAVEOUT_NOT_AVAILABLE",
+			-103: "TTS_DSP_NOT_FOUND",
+			-106: "TTS_NO_LICENSE"
+		}
+		
+		if self.instancia <= 0:
+			error_message = error_codes.get(self.instancia, f"Código de erro desconhecido: {self.instancia}")
+			logging.warning(f"Aviso na inicialização do DeltaTalk TTS: {error_message}")
+			# Define um valor positivo para tentar continuar
+			self.instancia = 1
+		
+		# Configurar licença
+		license_key = "DTK-300-29314-34564-04464-731"
+		result = self.dt.TTSENG_SetLicense(license_key.encode())
+		logging.debug(f"Resultado da configuração da licença: {result}")
+		
+		# Tenta configurar as opções iniciais com tratamento de erro para cada chamada
+		try:
+			result = self.dt.TTSENG_SetVoice(self.instancia, self._voice, 1)
+			logging.debug(f"Resultado SetVoice: {result}")
+		except Exception as e:
+			logging.error(f"Erro em SetVoice: {e}")
+			
+		try:
+			result = self.dt.TTSENG_SetProsodyOptions(self.instancia, 50, 350, 100, self.MODEL_HHS)
+			logging.debug(f"Resultado SetProsodyOptions: {result}")
+		except Exception as e:
+			logging.error(f"Erro em SetProsodyOptions: {e}")
+			
+		try:
+			result = self.dt.TTSENG_SetMode(self.instancia, self._rate, self._volume, self._pitch)
+			logging.debug(f"Resultado SetMode: {result}")
+		except Exception as e:
+			logging.error(f"Erro em SetMode: {e}")
+		
+		logging.debug("Inicialização do TTS concluída")
+
+	def speak(self, speechSequence):
+		if not self.instancia:
+			logging.error("Tentativa de fala sem instância inicializada")
+			return
+
+		logging.debug(f"Iniciando fala da sequência: {speechSequence}")
+		textParts = []
+		for item in speechSequence:
+			if isinstance(item, str):
+				textParts.append(item)
+			elif isinstance(item, IndexCommand):
+				self._lastIndex = item.index
+			elif isinstance(item, PitchCommand):
+				self.dt.TTSENG_SetMode(self.instancia, self._rate, self._volume, int(self._pitch * item.multiplier))
+			elif isinstance(item, RateCommand):
+				self.dt.TTSENG_SetMode(self.instancia, item.newValue, self._volume, self._pitch)
+			elif isinstance(item, VolumeCommand):
+				self.dt.TTSENG_SetMode(self.instancia, self._rate, item.newValue, self._pitch)
+
+		text = "".join(textParts)
+		if text:
+			logging.debug(f"Reproduzindo texto: {text}")
+			result = self.dt.TTSENG_PlayText(self.instancia, text.encode(), True)
+			if result != 0:  # TTS_SUCCESSFUL
+				log.error(f"Erro ao reproduzir texto. Código: {result}")
+
+		self.dt.TTSENG_SetMode(self.instancia, self._rate, self._volume, self._pitch)
+		_thread.start_new_thread(self._speechMonitor, (self._lastIndex, 0.1))
+
+	def cancel(self):
+		if self.instancia:
+			self.dt.TTSENG_StopText(self.instancia)
+
+	def pause(self, switch):
+		if not self.instancia:
+			return
+		
+		if switch:
+			self.dt.TTSENG_PauseText(self.instancia)
+		else:
+			self.dt.TTSENG_ResumeText(self.instancia)
+
+	def terminate(self):
+		try:
+			if self.instancia:
+				self.cancel()
+				self.dt.TTSENG_Close(self.instancia)
+				self.instancia = None
+		except Exception as e:
+			logging.error(f"Erro ao terminar sintetizador: {e}")
+			pass
+
+	def _speechMonitor(self, idx, delay):
+		if not self.instancia:
+			return
+
+		while self.dt.TTSENG_PlayText(self.instancia, b"", True) == -2:  # TTS_BUSY
+			time.sleep(delay)
+		if idx != 0:
+			synthIndexReached.notify(synth=self, index=idx)
+		else:
+			synthDoneSpeaking.notify(synth=self)
+
+	@property
+	def lastIndex(self):
+		return self._lastIndex
+
+	def voice(self):
+		return self._voice
+
+	def voice(self, value):
+		if self.instancia and value is not None:
+			try:
+				self._voice = int(value)  # Converter string para int
+				self.dt.TTSENG_SetVoice(self.instancia, self._voice, 1)
+			except Exception as e:
+				logging.error(f"Erro ao configurar voz: {e}")
+
+	@property
+	def availableVoices(self):
+		return [
+			VoiceInfo(
+				id=voice_info["id"],
+				displayName=voice_info["displayName"],
+				language="pt_BR"
+			) for voice_info in self._voices.values()
+		]

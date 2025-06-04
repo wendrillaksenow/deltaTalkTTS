@@ -1,0 +1,215 @@
+import os
+import synthDriverHandler
+import speech
+from synthDriverHandler import SynthDriver, VoiceInfo, synthIndexReached, synthDoneSpeaking
+import ctypes
+from ctypes import c_bool, c_void_p, c_int, c_char_p
+import logging
+import os.path
+import threading
+import time
+from collections import OrderedDict
+import _thread
+from logHandler import log
+import logging
+
+from speech.commands import (
+    IndexCommand,
+    PitchCommand,
+    RateCommand,
+    VolumeCommand,
+)
+
+class SynthDriver(synthDriverHandler.SynthDriver):
+    """DeltaTalk Synthesizer driver for NVDA."""
+    name = "deltatalk"
+    description = _("DeltaTalk")
+
+    # Constantes de vozes do sintetizador
+    VOICE_MASC1 = 0
+    VOICE_MASC2 = 1
+    VOICE_FEM1 = 2
+
+    # Constantes DSP_Freq
+    DSP_MULTIMEDIA = 1
+
+    _voices = OrderedDict()
+    _voices["VOICE_MASC1"] = {"name": "DeltaTalk - Marcelo (16 kHz)", "index": 0}
+    _voices["VOICE_MASC2"] = {"name": "DeltaTalk - José (22 kHz)", "index": 1}
+    _voices["VOICE_FEM1"] = {"name": "DeltaTalk - Paula (22 kHz)", "index": 2}
+
+    instancia = 0
+
+    @classmethod
+    def check(cls):
+        dtPath = os.path.abspath(os.path.join(os.path.dirname(__file__), r'deltatalk\Dtalk32t.dll'))
+        logging.debug(f"DeltaTalk DLL Path: {dtPath}")
+        exists = os.path.exists(dtPath)
+        logging.debug(f"DeltaTalk DLL Exists: {exists}")
+        return exists
+
+    supportedSettings = [
+        SynthDriver.PitchSetting(),
+        SynthDriver.RateSetting(),
+        SynthDriver.VolumeSetting(),
+        SynthDriver.VoiceSetting(),
+    ]
+
+    supportedCommands = {
+        IndexCommand,
+        PitchCommand,
+        RateCommand,
+        VolumeCommand,
+    }
+
+    supportedNotifications = {synthIndexReached, synthDoneSpeaking}
+
+    def __init__(self):
+        self._rate = 10
+        self._pitch = 10
+        self._volume = 20
+        self._voice = 0  # VOICE_MASC1
+        self._lastIndex = 0
+
+        dtPath = os.path.abspath(os.path.join(os.path.dirname(__file__), r'deltatalk\Dtalk32t.dll'))
+        if not os.path.exists(dtPath):
+            raise RuntimeError("DeltaTalk DLL não encontrada no caminho especificado.")
+        logging.debug(f"DeltaTalk DLL encontrada no caminho: {dtPath}")
+
+        try:
+            self.dt = ctypes.windll.LoadLibrary(dtPath)
+            logging.debug(f"DeltaTalk DLL carregada: {self.dt}")
+
+            # Carregar as funções utilizando os números ordinais
+            self.TTSENG_Init = self.dt[25]  # Número ordinal da função TTSENG_Init
+            self.TTSENG_SetVoice = self.dt[43]  # Número ordinal da função TTSENG_SetVoice
+            self.TTSENG_SetMode = self.dt[37]  # Número ordinal da função TTSENG_SetMode
+            self.TTSENG_PlayText = self.dt[27]  # Número ordinal da função TTSENG_PlayText
+            self.TTSENG_StopText = self.dt[45]  # Número ordinal da função TTSENG_StopText
+
+            # Definindo protótipos e parâmetros para as funções da DLL
+            self.TTSENG_Init.argtypes = [c_bool, c_void_p, c_int]
+            self.TTSENG_Init.restype = c_int
+
+            self.TTSENG_SetVoice.argtypes = [c_int, c_int, c_int]
+            self.TTSENG_SetVoice.restype = c_int
+
+            self.TTSENG_SetMode.argtypes = [c_int, c_int, c_int, c_int]
+            self.TTSENG_SetMode.restype = c_int
+
+            self.TTSENG_PlayText.argtypes = [c_int, c_char_p, c_bool]
+            self.TTSENG_PlayText.restype = c_int
+
+            self.TTSENG_StopText.argtypes = [c_int]
+            self.TTSENG_StopText.restype = c_int
+
+        except Exception as e:
+            logging.error(f"Erro ao carregar DeltaTalk DLL: {e}")
+            raise RuntimeError("Erro ao carregar a DeltaTalk DLL.")
+        
+        # Inicializa o sistema TTS e armazena a instância
+        try:
+            logging.debug("Chamando TTSENG_Init com parâmetros: False, None, DSP_MULTIMEDIA")
+            self.instancia = self.TTSENG_Init(False, None, 1)  # DSP_MULTIMEDIA
+            logging.debug(f"Resultado da inicialização do DeltaTalk TTS (instância): {self.instancia}")
+            if self.instancia < 0:
+                logging.warning(f"Instância negativa retornada: {self.instancia}. Tentando continuar.")
+            else:
+                logging.debug(f"DeltaTalk instância inicializada com sucesso: {self.instancia}")
+        except Exception as e:
+            logging.error(f"Erro durante a inicialização do DeltaTalk TTS: {e}")
+            raise RuntimeError(f"Erro durante a inicialização do DeltaTalk TTS: {e}")
+        
+        try:
+            if self.instancia < 0:
+                dummy_instance = 1
+                logging.debug(f"Definindo voz com parâmetros: instancia={dummy_instance}, voice={self._voice}, 1")
+                self.TTSENG_SetVoice(dummy_instance, self._voice, 1)
+                logging.debug(f"Definindo modo com parâmetros: instancia={dummy_instance}, rate={self._rate}, volume={self._volume}, pitch={self._pitch}")
+                self.TTSENG_SetMode(dummy_instance, self._rate, self._volume, self._pitch)
+            else:
+                logging.debug(f"Definindo voz com parâmetros: instancia={self.instancia}, voice={self._voice}, 1")
+                self.TTSENG_SetVoice(self.instancia, self._voice, 1)
+                logging.debug(f"Definindo modo com parâmetros: instancia={self.instancia}, rate={self._rate}, volume={self._volume}, pitch={self._pitch}")
+                self.TTSENG_SetMode(self.instancia, self._rate, self._volume, self._pitch)
+        except Exception as e:
+            logging.error(f"Erro ao definir voz ou modo do DeltaTalk TTS: {e}")
+            raise RuntimeError(f"Erro ao definir voz ou modo do DeltaTalk TTS: {e}")
+
+    def speak(self, speechSequence):
+        self._lastIndex = 0
+        s = ""
+        chpitch = False
+        for item in speechSequence:
+            if isinstance(item, str):
+                s += " " + item
+            elif isinstance(item, IndexCommand):
+                self._lastIndex = item.index
+            elif isinstance(item, PitchCommand):
+                if not chpitch:
+                    chpitch = True
+                    self.TTSENG_SetMode(self.instancia, self._rate, self._volume, int(self._pitch * item.multiplier))
+            elif isinstance(item, RateCommand):
+                self.TTSENG_SetMode(self.instancia, item.rate, self._volume, self._pitch)
+            elif isinstance(item, VolumeCommand):
+                self.TTSENG_SetMode(self.instancia, self._rate, item.volume, self._pitch)
+
+        if s:
+            self.TTSENG_PlayText(self.instancia, s.strip().encode(), True)
+        self.TTSENG_SetMode(self.instancia, self._rate, self._volume, self._pitch)
+        _thread.start_new_thread(self._speechMonitor, (self._lastIndex, 0.1,))
+
+    def cancel(self):
+        self.TTSENG_StopText(self.instancia)
+
+    def _get_rate(self):
+        return self._rate
+
+    def _get_index(self):
+        return self._lastIndex
+
+    def _set_rate(self, value):
+        self._rate = int(value)
+        self.TTSENG_SetMode(self.instancia, self._rate, self._volume, self._pitch)
+
+    def _get_pitch(self):
+        return self._pitch
+
+    def _set_pitch(self, value):
+        self._pitch = int(value)
+        self.TTSENG_SetMode(self.instancia, self._rate, self._volume, self._pitch)
+
+    def _get_volume(self):
+        return self._volume
+
+    def _set_volume(self, value):
+        self._volume = int(value)
+        self.TTSENG_SetMode(self.instancia, self._rate, self._volume, self._pitch)
+
+    def _get_voice(self):
+        return self._voice
+
+    def _set_voice(self, value):
+       self._voice = value
+       self.TTSENG_SetVoice(self.instancia, self._voice, 1)
+
+    def _speechMonitor(self, idx, delay):
+        while self.TTSENG_PlayText(self.instancia, "00", True) == -2:
+            time.sleep(delay)
+        if idx != 0:
+            synthIndexReached.notify(synth=self, index=idx)
+        else:
+            synthDoneSpeaking.notify(synth=self)
+
+    @property
+    def availableVoices(self):
+        return [
+            VoiceInfo(
+                id=str(voice_info["index"]),
+                name=voice_info["name"],
+                languages=["pt_BR"],
+                gender="male" if "MASC" in voice_info["name"] else "female",
+                age="adult"
+            )
+            for voice_info in self._voices.values()
+        ]

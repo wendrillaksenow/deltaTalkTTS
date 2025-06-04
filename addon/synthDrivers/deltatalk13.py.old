@@ -1,0 +1,153 @@
+# synthDrivers/deltatalk.py
+from collections import OrderedDict
+import synthDriverHandler
+import speech
+from synthDriverHandler import SynthDriver, VoiceInfo, synthIndexReached, synthDoneSpeaking
+from ctypes import *
+import os.path
+import threading
+import time
+import _thread
+import logging
+
+from speech.commands import (
+    IndexCommand,
+    PitchCommand,
+    RateCommand,
+    VolumeCommand,
+)
+
+class SynthDriver(synthDriverHandler.SynthDriver):
+    name = "deltatalk"
+    description = _("DeltaTalk")
+
+    _voices = OrderedDict()
+    _voices["br1"] = {"name": "DeltaTalk - Marcelo (16 kHz)"}
+    _voices["br2"] = {"name": "DeltaTalk - José (22 kHz)"}
+    _voices["br3"] = {"name": "DeltaTalk - Paula (22 kHz)"}
+
+    VOICE_MASC1 = 0  # Índice para br1
+    VOICE_MASC2 = 1  # Índice para br2
+    VOICE_FEM1 = 2   # Índice para br3
+
+    @classmethod
+    def check(cls):
+        dtPath = os.path.abspath(os.path.join(os.path.dirname(__file__), 'deltatalk', 'Dtalk32t.dll'))
+        logging.debug(f"DeltaTalk DLL Path: {dtPath}")
+        exists = os.path.exists(dtPath)
+        logging.debug(f"DeltaTalk DLL Exists: {exists}")
+        return exists
+
+    supportedSettings = [
+        SynthDriver.PitchSetting(),
+        SynthDriver.RateSetting(),
+        SynthDriver.VolumeSetting(),
+        SynthDriver.VoiceSetting(),
+    ]
+
+    supportedCommands = {
+        IndexCommand,
+        PitchCommand,
+        RateCommand,
+        VolumeCommand,
+    }
+
+    supportedNotifications = {synthIndexReached, synthDoneSpeaking}
+
+    def __init__(self):
+        self._rate = 10
+        self._pitch = 10
+        self._volume = 20
+        self._voice = "br1"
+        self._lastIndex = 0
+
+        dtPath = os.path.abspath(os.path.join(os.path.dirname(__file__), 'deltatalk', 'Dtalk32t.dll'))
+        if not os.path.exists(dtPath):
+            raise RuntimeError("DeltaTalk DLL não encontrada no caminho especificado.")
+        
+        self.dt = windll.LoadLibrary(dtPath)
+        self.instancia = self.dt.TTSENG_Init(False, None, 16000 if self._voice == "br1" else 22050)
+        if self.instancia <= 0:
+            raise RuntimeError("Falha ao inicializar o DeltaTalk TTS.")
+
+        self._set_voice(self._voice)
+        self.dt.TTSENG_SetMode(self.instancia, self._rate, self._volume, self._pitch)
+
+    def speak(self, speechSequence):
+        self._lastIndex = 0
+        s = ""
+        chpitch = False
+        for item in speechSequence:
+            if isinstance(item, str):
+                s += " " + item
+            elif isinstance(item, IndexCommand):
+                self._lastIndex = item.index
+            elif isinstance(item, PitchCommand):
+                if not chpitch:
+                    chpitch = True
+                    self.dt.TTSENG_SetMode(self.instancia, self._rate, self._volume, int(self._pitch * item.multiplier))
+            elif isinstance(item, RateCommand):
+                self.dt.TTSENG_SetMode(self.instancia, item.rate, self._volume, self._pitch)
+            elif isinstance(item, VolumeCommand):
+                self.dt.TTSENG_SetVolume(self.instancia, item.volume)
+
+        if s:
+            self.dt.TTSENG_PlayText(s.strip().encode())
+        self.dt.TTSENG_SetPitch(self._pitch)
+        _thread.start_new_thread(self._speechMonitor, (self._lastIndex, 0.1,))
+
+    def cancel(self):
+        self.dt.TTSENG_StopText()
+
+    def _get_rate(self):
+        return self._rate
+
+    def _get_index(self):
+        return self._lastIndex
+
+    def _set_rate(self, value):
+        self._rate = int(value)
+        self.dt.TTSENG_SetRate(self.instancia, self._rate)
+
+    def _get_pitch(self):
+        return self._pitch
+
+    def _set_pitch(self, value):
+        self._pitch = int(value)
+        self.dt.TTSENG_SetPitch(self.instancia, self._pitch)
+
+    def _get_volume(self):
+        return self._volume
+
+    def _set_volume(self, value):
+        self._volume = int(value)
+        self.dt.TTSENG_SetVolume(self.instancia, self._volume)
+
+    def _get_voice(self):
+        return self._voice
+
+    def _set_voice(self, value):
+        if value not in self._voices:
+            raise ValueError(f"Voz inválida: {value}")
+        self._voice = value
+        voice_index = list(self._voices.keys()).index(self._voice)
+        vocal_tract = 1  # Definindo o vocal tract como 1 por padrão
+        self.dt.TTSENG_SetVoice(self.instancia, voice_index, vocal_tract)
+
+    def _speechMonitor(self, idx, delay):
+        while self.dt.TTSENG_IsSpeaking():
+            time.sleep(delay)
+        if idx != 0:
+            synthIndexReached.notify(synth=self, index=idx)
+        else:
+            synthDoneSpeaking.notify(synth=self)
+
+    @property
+    def availableVoices(self):
+        return [
+            VoiceInfo(
+                str(i),
+                voice["name"]
+            )
+            for i, voice in enumerate(self._voices.values())
+        ]

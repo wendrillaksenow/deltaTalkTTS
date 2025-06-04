@@ -1,0 +1,114 @@
+# synthDrivers/deltatalk.py
+# A part of NonVisual Desktop Access (NVDA)
+# Copyright (C) 2006-2024 NV Access Limited
+# This file is covered by the GNU General Public License.
+# See the file COPYING for more details.
+
+import synthDriverHandler
+import speech
+from synthDriverHandler import SynthDriver, VoiceInfo, synthIndexReached, synthDoneSpeaking
+from ctypes import *
+import os.path
+import threading
+import time
+import _thread
+from time import sleep
+
+from speech.commands import (
+    IndexCommand,
+    PitchCommand,
+    RateCommand,
+)
+
+class DeltaTalkSynthDriver(synthDriverHandler.SynthDriver):
+    """DeltaTalk Synthesizer driver for NVDA."""
+    name = "deltatalk"
+    # Translators: Description for a speech synthesizer for NVDA.
+    description = _("Micropower DeltaTalk TTS")
+
+    @classmethod
+    def check(cls):
+        dtPath = os.path.abspath(os.path.join(os.path.dirname(__file__), r"deltatalk", r"Dtalk32t.dll"))
+        return os.path.exists(dtPath)
+
+    supportedSettings = [
+        SynthDriver.PitchSetting(),
+        SynthDriver.RateSetting(),
+        SynthDriver.VoiceSetting(),
+    ]
+
+    supportedCommands = {
+        IndexCommand,
+        PitchCommand,
+        RateCommand,
+    }
+
+    supportedNotifications = {synthIndexReached, synthDoneSpeaking}
+
+    def __init__(self):
+        self._rate = 70
+        self._pitch = 50
+        self._lastIndex = 0
+
+        dtPath = os.path.abspath(os.path.dirname(__file__)) + "\\"
+        if not os.path.exists(dtPath + "Dtalk32t.dll"):
+            dtPath = "deltatalk\\"
+        self.dt = windll.LoadLibrary(dtPath + "Dtalk32t.dll")
+        self.dt.TTSENG_Init(False, None, 22050)
+        self.dt.TTSENG_SetPitch(self._pitch)
+        self.dt.TTSENG_SetRate(self._rate)
+
+    def speak(self, speechSequence):
+        self._lastIndex = 0
+        i0 = 0
+        s = ""
+        chpitch = False
+        for item in speechSequence:
+            if isinstance(item, str):
+                s += " " + item
+            elif isinstance(item, IndexCommand):
+                self._lastIndex = item.index
+                if i0 == 0:
+                    i0 = self._lastIndex
+            elif isinstance(item, PitchCommand):
+                if not chpitch:  # only first change works
+                    chpitch = True
+                    self.dt.TTSENG_SetPitch(int(self._pitch * item.multiplier))
+
+        if s:
+            self.dt.TTSENG_PlayText(s.strip().encode())
+        self.dt.TTSENG_SetPitch(self._pitch)
+        _thread.start_new_thread(self._speechMonitor, (self._lastIndex, 0.1,))
+
+    def cancel(self):
+        self.dt.TTSENG_StopText()
+
+    def _get_rate(self):
+        return self._rate
+
+    def _get_index(self):
+        return self._lastIndex
+
+    def _set_rate(self, value):
+        self._rate = int(value)
+        self.dt.TTSENG_SetRate(self._rate)
+
+    def _get_pitch(self):
+        return self._pitch
+
+    def _set_pitch(self, value):
+        self._pitch = int(value)
+        self.dt.TTSENG_SetPitch(self._pitch)
+
+    def _speechMonitor(self, idx, delay):
+        while self.dt.TTSENG_IsSpeaking():
+            time.sleep(delay)
+        if idx != 0:
+            synthIndexReached.notify(synth=self, index=idx)
+        else:
+            synthDoneSpeaking.notify(synth=self)
+
+def synthDriverCreator():
+    return DeltaTalkSynthDriver()
+
+synthDriverHandler.synthDriverFactory.registerSynthesizerModule(DeltaTalkSynthDriver)
