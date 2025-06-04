@@ -9,14 +9,15 @@
 import os
 import sys
 import ctypes
+import tempfile
 from ctypes import *
 from synthDriverHandler import SynthDriver as SynthDriverBase
 from synthDriverHandler import synthDoneSpeaking, SynthDriver, synthIndexReached, VoiceInfo
 import logging
 from speech.commands import IndexCommand, PitchCommand, RateCommand, VolumeCommand, CharacterModeCommand
 import shutil
-import subprocess
 import addonHandler
+from systemUtils import execElevated
 
 addonHandler.initTranslation()
 
@@ -56,6 +57,68 @@ DT_MULTIPLIER = 20 / 100  # 100 (NVDA) → 20 (DeltaTalk), mínimo 1
 def convert_nvda_to_dt(value):
 	"""Converts a value from the NVDA scale (0-100) to the DeltaTalk scale (1-20)."""
 	return max(1, min(20, int(value * DT_MULTIPLIER)))
+
+def test_write_permission(target_path):
+	"""Test if we have write permission to the target directory."""
+	test_file = os.path.join(target_path, "test_write_permission.tmp")
+	try:
+		with open(test_file, "w") as f:
+			f.write("test")
+		os.remove(test_file)
+		return True
+	except (OSError, IOError):
+		return False
+
+def copy_files_with_elevation(source_dir, target_dir, file_list):
+	"""
+	Copy specific files with elevated permissions using batch file approach.
+	Returns True if successful, False otherwise.
+	"""
+	if not file_list:
+		return True
+	
+	batch_content = "@echo off\n"
+	batch_content += f'echo Copying DeltaTalk files from "{source_dir}" to "{target_dir}"\n'
+	
+	# Add copy commands for each file
+	try:
+		for filename in file_list:
+			source_file = os.path.join(source_dir, filename)
+			target_file = os.path.join(target_dir, filename)
+			
+			if os.path.isfile(source_file):
+				# Use xcopy for better reliability
+				batch_content += f'xcopy /Y "{source_file}" "{target_file}*"\n'
+		
+		batch_content += "echo Copy operation completed\n"
+		
+		# Create temporary batch file
+		with tempfile.NamedTemporaryFile(delete=False, suffix=".bat", mode="w", encoding="utf-8") as batch_file:
+			batch_file.write(batch_content)
+			batch_path = batch_file.name
+		
+		try:
+			# Execute batch file with elevation
+			logging.debug(_("Executing batch file with elevation: {path}").format(path=batch_path))
+			result = execElevated("cmd.exe", ["/c", batch_path], wait=True)
+			
+			if result == 0:
+				logging.info(_("Files copied successfully with elevated permissions"))
+				return True
+			else:
+				logging.error(_("Batch file execution failed with code: {code}").format(code=result))
+				return False
+				
+		finally:
+			# Clean up batch file
+			try:
+				os.remove(batch_path)
+			except Exception as e:
+				logging.warning(_("Failed to delete temporary batch file: {error}").format(error=e))
+		
+	except Exception as e:
+		logging.error(_("Error creating/executing batch file: {error}").format(error=e))
+		return False
 
 class SynthDriver(SynthDriverBase):
 	"""DeltaTalk Synthesizer driver for NVDA."""
@@ -114,27 +177,73 @@ class SynthDriver(SynthDriverBase):
 		dll_path = os.path.join(nvda_root, "Dtalk32T.dll")
 
 		# Check and copy files if necessary
-		required_files = ["br1.dsp", "br2.dsp", "br3.dsp", "brazil.alp", "brazil.des", "brazil.f0", "brazil.rul", "brazilf0.HHS", "brport.lng", "Dtalk32t.dll", "DTDsp32t.dll", "prosody.dll", "serial.dll"]
-		missing_files = [f for f in required_files if not os.path.isfile(os.path.join(nvda_root, f))]
+		required_files = [
+			"br1.dsp", "br2.dsp", "br3.dsp", "brazil.alp", "brazil.des", 
+			"brazil.f0", "brazil.rul", "brazilf0.HHS", "brport.lng", 
+			"Dtalk32t.dll", "DTDsp32t.dll", "prosody.dll", "serial.dll"
+		]
+		
+		# Check which files are missing
+		missing_files = []
+		for f in required_files:
+			if not os.path.isfile(os.path.join(nvda_root, f)):
+				# Verify the file exists in the add-on directory
+				if os.path.isfile(os.path.join(addon_path, f)):
+					missing_files.append(f)
+				else:
+					logging.warning(_("Required file not found in add-on: {file}").format(file=f))
+		
 		if missing_files:
-			logging.debug(_("Missing files in NVDA: {files}. Copying from the add-on.").format(files=", ".join(missing_files)))
-			for f in missing_files:
-				src = os.path.join(addon_path, f)
-				dst = os.path.join(nvda_root, f)
-				if os.path.isfile(src):
-					try:
-						shutil.copy2(src, dst)
-						logging.debug(_("Copied: {file}").format(file=f))
-					except PermissionError:
-						logging.warning(_("Permission denied when copying {file}. Trying with elevation.").format(file=f))
-						self._copy_with_elevation(src, dst)
-					except Exception as e:
-						logging.error(_("Error copying {file}: {error}").format(file=f, error=e))
+			logging.info(_("Missing files in NVDA: {files}. Attempting to copy from add-on.").format(
+				files=", ".join(missing_files)))
+			
+			# Check if we need elevation
+			need_elevation = not test_write_permission(nvda_root)
+			copy_success = False
+			
+			if need_elevation:
+				logging.info(_("Elevated permissions required. Attempting elevated copy."))
+				copy_success = copy_files_with_elevation(addon_path, nvda_root, missing_files)
+				
+				if not copy_success:
+					logging.warning(_("Elevated copy failed. Attempting fallback individual copy."))
+					# Fallback: try copying files individually
+					for f in missing_files:
+						src = os.path.join(addon_path, f)
+						dst = os.path.join(nvda_root, f)
+						if os.path.isfile(src):
+							try:
+								shutil.copy2(src, dst)
+								logging.debug(_("Copied: {file}").format(file=f))
+							except PermissionError:
+								logging.warning(_("Permission denied copying {file}. File will be missing.").format(file=f))
+							except Exception as e:
+								logging.error(_("Error copying {file}: {error}").format(file=f, error=e))
+			else:
+				# Normal copy without elevation
+				logging.info(_("Normal permissions sufficient. Copying files."))
+				for f in missing_files:
+					src = os.path.join(addon_path, f)
+					dst = os.path.join(nvda_root, f)
+					if os.path.isfile(src):
+						try:
+							shutil.copy2(src, dst)
+							logging.debug(_("Copied: {file}").format(file=f))
+						except Exception as e:
+							logging.error(_("Error copying {file}: {error}").format(file=f, error=e))
+				copy_success = True
+			
+			if copy_success:
+				logging.info(_("File copy operation completed successfully."))
+			else:
+				logging.warning(_("Some files may not have been copied. Synthesizer functionality may be limited."))
 
+		# Verify DLL exists after copy attempt
 		if not os.path.isfile(dll_path):
 			logging.error(_("DLL not found in: {path}").format(path=dll_path))
 			raise RuntimeError(_("DeltaTalk DLL not found. Check the installation of the add-on."))
 
+		# Set up DLL path
 		if hasattr(os, "add_dll_directory"):
 			os.add_dll_directory(nvda_root)
 		else:
@@ -154,15 +263,6 @@ class SynthDriver(SynthDriverBase):
 
 		if not self._initialize_tts():
 			raise RuntimeError(_("DeltaTalk synthesizer failed to initialize"))
-
-	def _copy_with_elevation(self, src, dst):
-		"""Try copying a file with elevation via shell."""
-		try:
-			cmd = f'cmd.exe /c copy "{src}" "{dst}"'  # f-string permitido aqui, pois não é traduzido
-			result = subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
-			logging.debug(_("The copy with elevation was successful: {source} -> {destination}").format(source=src, destination=dst))
-		except subprocess.CalledProcessError as e:
-			logging.error(_("The copy with elevation failed: {output} Run NVDA as administrator and try again").format(output=e.output))
 
 	def _initialize_tts(self):
 		if not self.dt:

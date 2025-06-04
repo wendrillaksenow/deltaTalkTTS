@@ -1,0 +1,459 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the 'deltaTalk' package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 'deltaTalk' '0.2'\n"
+"Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
+"POT-Creation-Date: 2025-06-04 00:32-0300\n"
+"PO-Revision-Date: 2025-06-04 12:52-0300\n"
+"Last-Translator: \n"
+"Language-Team: Wendrill Aksenow Brandão <wendrillaksenow@gmail.com\n"
+"Language: pt_PT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4\n"
+
+#. Execute batch file with elevation
+#: addon\synthDrivers\deltatalk.py:102
+#, python-brace-format
+msgid "Executing batch file with elevation: {path}"
+msgstr "Execução de ficheiro batch com elevação: {path}"
+
+#: addon\synthDrivers\deltatalk.py:106
+msgid "Files copied successfully with elevated permissions"
+msgstr "Ficheiros copiados com sucesso com permissões elevadas"
+
+#: addon\synthDrivers\deltatalk.py:109
+#, python-brace-format
+msgid "Batch file execution failed with code: {code}"
+msgstr "A execução do ficheiro batch falhou com o código: {code}"
+
+#: addon\synthDrivers\deltatalk.py:117
+#, python-brace-format
+msgid "Failed to delete temporary batch file: {error}"
+msgstr "Falha ao eliminar o ficheiro batch temporário: {error}"
+
+#: addon\synthDrivers\deltatalk.py:120
+#, python-brace-format
+msgid "Error creating/executing batch file: {error}"
+msgstr "Erro ao criar/executar ficheiro batch: {error}"
+
+#. Translators: Description for a speech synthesizer for NVDA.
+#: addon\synthDrivers\deltatalk.py:127
+msgid "MicroPower DeltaTalk TTS"
+msgstr "MicroPower DeltaTalk TTS"
+
+#: addon\synthDrivers\deltatalk.py:153
+#, python-brace-format
+msgid "check: Checking the path: {path}"
+msgstr "verificação: A verificar o caminho: {path}"
+
+#: addon\synthDrivers\deltatalk.py:155
+msgid "check: Dtalk32T.dll not found"
+msgstr "verificação: Dtalk32T.dll não encontrado"
+
+#: addon\synthDrivers\deltatalk.py:159
+msgid "check: Dtalk32T.dll loaded successfully"
+msgstr "verificação: Dtalk32T.dll carregado com sucesso"
+
+#: addon\synthDrivers\deltatalk.py:162
+#, python-brace-format
+msgid "check: Failed to load DLL: {error}"
+msgstr "verificação: Falha ao carregar a DLL: {error}"
+
+#: addon\synthDrivers\deltatalk.py:194
+#, python-brace-format
+msgid "Required file not found in add-on: {file}"
+msgstr "Ficheiro necessário não encontrado no extra: {file}"
+
+#: addon\synthDrivers\deltatalk.py:197
+#, python-brace-format
+msgid "Missing files in NVDA: {files}. Attempting to copy from add-on."
+msgstr ""
+"Ficheiros em falta no NVDA: {files}. A tentar copiar a partir do extra."
+
+#: addon\synthDrivers\deltatalk.py:205
+msgid "Elevated permissions required. Attempting elevated copy."
+msgstr "São necessárias permissões elevadas. Tentativa de cópia elevada."
+
+#: addon\synthDrivers\deltatalk.py:209
+msgid "Elevated copy failed. Attempting fallback individual copy."
+msgstr ""
+"A cópia elevada falhou. Tentativa de cópia individual como alternativa."
+
+#: addon\synthDrivers\deltatalk.py:217 addon\synthDrivers\deltatalk.py:231
+#, python-brace-format
+msgid "Copied: {file}"
+msgstr "Copiado: {file}"
+
+#: addon\synthDrivers\deltatalk.py:219
+#, python-brace-format
+msgid "Permission denied copying {file}. File will be missing."
+msgstr "Permissão negada ao copiar {file}. O ficheiro ficará em falta."
+
+#: addon\synthDrivers\deltatalk.py:221 addon\synthDrivers\deltatalk.py:233
+#, python-brace-format
+msgid "Error copying {file}: {error}"
+msgstr "Erro ao copiar {file}: {error}"
+
+#. Normal copy without elevation
+#: addon\synthDrivers\deltatalk.py:224
+msgid "Normal permissions sufficient. Copying files."
+msgstr "As permissões normais são suficientes. A copiar ficheiros."
+
+#: addon\synthDrivers\deltatalk.py:237
+msgid "File copy operation completed successfully."
+msgstr "A operação de cópia de ficheiros foi concluída com êxito."
+
+#: addon\synthDrivers\deltatalk.py:239
+msgid ""
+"Some files may not have been copied. Synthesizer functionality may be "
+"limited."
+msgstr ""
+"Alguns ficheiros podem não ter sido copiados. A funcionalidade do "
+"sintetizador pode ser limitada."
+
+#: addon\synthDrivers\deltatalk.py:243
+#, python-brace-format
+msgid "DLL not found in: {path}"
+msgstr "DLL não encontrada em: {path}"
+
+#: addon\synthDrivers\deltatalk.py:244
+msgid "DeltaTalk DLL not found. Check the installation of the add-on."
+msgstr ""
+"A DLL do DeltaTalk não foi encontrada. Verifique a instalação do extra."
+
+#: addon\synthDrivers\deltatalk.py:255
+msgid "__init__: DLL loaded successfully"
+msgstr "__init__: DLL carregada com sucesso"
+
+#: addon\synthDrivers\deltatalk.py:257
+#, python-brace-format
+msgid "Error loading DeltaTalk DLL in {path}: {error}"
+msgstr "Erro ao carregar a DLL do DeltaTalk em {path}: {error}"
+
+#: addon\synthDrivers\deltatalk.py:259
+#, python-brace-format
+msgid "Failed to load DLL Dtalk32T.dll: {error}"
+msgstr "Falha ao carregar a DLL Dtalk32T.dll: {error}"
+
+#: addon\synthDrivers\deltatalk.py:265
+msgid "DeltaTalk synthesizer failed to initialize"
+msgstr "Falha na inicialização do sintetizador DeltaTalk"
+
+#: addon\synthDrivers\deltatalk.py:269
+msgid "Attempt to initialize TTS without the DLL loaded."
+msgstr "Tentativa de inicialização do TTS sem a DLL carregada."
+
+#: addon\synthDrivers\deltatalk.py:273
+#, python-brace-format
+msgid "NVDA directory: {path}"
+msgstr "Diretório do NVDA: {path}"
+
+#: addon\synthDrivers\deltatalk.py:274
+#, python-brace-format
+msgid "Files in the folder: {files}"
+msgstr "Ficheiros na pasta: {files}"
+
+#: addon\synthDrivers\deltatalk.py:276
+#, python-brace-format
+msgid "Original work directory: {path}"
+msgstr "Diretório de trabalho original: {path}"
+
+#: addon\synthDrivers\deltatalk.py:278
+#, python-brace-format
+msgid "Work directory changed to: {path}"
+msgstr "Diretório de trabalho alterado para: {path}"
+
+#: addon\synthDrivers\deltatalk.py:281
+msgid "Starting TTS initialization"
+msgstr "A iniciar a inicialização do TTS"
+
+#: addon\synthDrivers\deltatalk.py:284 addon\synthDrivers\deltatalk.py:291
+#, python-brace-format
+msgid "Error initializing TTS: {error}"
+msgstr "Erro ao inicializar o TTS: {error}"
+
+#: addon\synthDrivers\deltatalk.py:287
+#, python-brace-format
+msgid "DeltaTalk initialized. Instance: {instance}"
+msgstr "DeltaTalk inicializado. Instância: {instance}"
+
+#: addon\synthDrivers\deltatalk.py:296
+msgid "Work directory restored"
+msgstr "Diretório de trabalho restaurado"
+
+#: addon\synthDrivers\deltatalk.py:306
+#, python-brace-format
+msgid "Error when applying settings: {error} ({code})"
+msgstr "Erro ao aplicar as definições: {error} ({code})"
+
+#: addon\synthDrivers\deltatalk.py:309
+#, python-brace-format
+msgid "Settings applied: rate={rate}, volume={volume}, pitch={pitch}"
+msgstr ""
+"Definições aplicadas: velocidade={rate}, volume={volume}, entoação={pitch}"
+
+#: addon\synthDrivers\deltatalk.py:316
+#, python-brace-format
+msgid "Error when applying voice: {error} ({code})"
+msgstr "Erro ao aplicar a voz: {error} ({code})"
+
+#: addon\synthDrivers\deltatalk.py:319
+#, python-brace-format
+msgid "Applied voice: {voice} (ID: {id})"
+msgstr "Voz aplicada: {voice} (ID: {id})"
+
+#: addon\synthDrivers\deltatalk.py:324
+msgid "Speech attempt without initialized instance."
+msgstr "Tentativa de discurso sem instância inicializada."
+
+#: addon\synthDrivers\deltatalk.py:359
+#, python-brace-format
+msgid "Error when attaching text: {error}"
+msgstr "Erro ao anexar texto: {error}"
+
+#: addon\synthDrivers\deltatalk.py:361
+#, python-brace-format
+msgid "Attached text: {text}"
+msgstr "Texto anexado: {text}"
+
+#: addon\synthDrivers\deltatalk.py:363
+#, python-brace-format
+msgid "Error when speaking text: {error}"
+msgstr "Erro ao falar texto: {error}"
+
+#: addon\synthDrivers\deltatalk.py:365
+#, python-brace-format
+msgid "Spoken text: {text}"
+msgstr "Texto falado: {text}"
+
+#: addon\synthDrivers\deltatalk.py:367
+#, python-brace-format
+msgid "Error when processing text: {error}"
+msgstr "Erro no processamento do texto: {error}"
+
+#: addon\synthDrivers\deltatalk.py:389
+#, python-brace-format
+msgid "Speed set to {rate} (converted from {original})"
+msgstr "Velocidade definida para {rate} (convertida de {original})"
+
+#: addon\synthDrivers\deltatalk.py:401
+#, python-brace-format
+msgid "Pitch set to {pitch} (converted from {original})"
+msgstr "Entoação definida para {pitch} (convertida de {original})"
+
+#: addon\synthDrivers\deltatalk.py:413
+#, python-brace-format
+msgid "Volume set to {volume} (converted from {original})"
+msgstr "Volume definido para {volume} (convertido de {original})"
+
+#: addon\synthDrivers\deltatalk.py:427
+#, python-brace-format
+msgid "Error configuring voice: {error} ({code})"
+msgstr "Erro ao configurar a voz: {error} ({code})"
+
+#: addon\synthDrivers\deltatalk.py:430
+#, python-brace-format
+msgid "Voice changed to {voice}"
+msgstr "A voz mudou para {voice}"
+
+#: addon\synthDrivers\deltatalk.py:445
+msgid "Text paused"
+msgstr "Texto pausado"
+
+#: addon\synthDrivers\deltatalk.py:448
+msgid "Text resumed"
+msgstr "Texto retomado"
+
+#: addon\synthDrivers\deltatalk.py:453
+msgid "Text stopped"
+msgstr "Texto parado"
+
+#: addon\synthDrivers\deltatalk.py:461
+#, python-brace-format
+msgid "Error when closing: {error} ({code})"
+msgstr "Erro ao fechar: {error} ({code})"
+
+#: addon\synthDrivers\deltatalk.py:464
+msgid "DeltaTalk synthesizer successfully closed"
+msgstr "Sintetizador DeltaTalk fechado com sucesso"
+
+#: addon\synthDrivers\deltatalk.py:466
+#, python-brace-format
+msgid "Error closing the synthesizer: {error}"
+msgstr "Erro ao fechar o sintetizador: {error}"
+
+#. Add-on summary/title, usually the user visible name of the add-on
+#. Translators: Summary/title for this add-on
+#. to be shown on installation and add-on information found in add-on store
+#: buildVars.py:23
+msgid "MicroPower DeltaTalk TTS (Initial Prototipe)"
+msgstr "MicroPower DeltaTalk TTS (protótipo inicial)"
+
+#. Add-on description
+#. Translators: Long description to be shown for this add-on on add-on information from add-on store
+#: buildVars.py:26
+msgid ""
+"DeltaTalk is the first high-quality speech synthesizer available for the "
+"Portuguese language.\n"
+"This add-on implements NVDA compatibility with this synthesizer."
+msgstr ""
+"O DeltaTalk é o primeiro sintetizador de fala de alta qualidade, disponível "
+"para a língua portuguesa.\n"
+"Este extra implementa a compatibilidade do NVDA com este sintetizador."
+
+#: installTasks.py:188
+#, python-brace-format
+msgid ""
+"Error: Source directory not found:\n"
+"{addon_path}"
+msgstr ""
+"Erro: Diretório de origem não encontrado:\n"
+"{addon_path}"
+
+#: installTasks.py:189 installTasks.py:297
+msgid "Installation Error"
+msgstr "Erro de instalação"
+
+#: installTasks.py:201
+msgid "No DeltaTalk files found in the add-on package."
+msgstr "Não foram encontrados ficheiros do DeltaTalk no pacote do extra."
+
+#: installTasks.py:202 installTasks.py:286
+msgid "Installation Warning"
+msgstr "Aviso de instalação"
+
+#: installTasks.py:212
+#, python-brace-format
+msgid ""
+"The DeltaTalk files are already present in the target directory "
+"({target_path}). Installation will proceed without copying new files."
+msgstr ""
+"Os ficheiros do DeltaTalk já estão presentes no diretório de destino "
+"({target_path}). A instalação prosseguirá sem copiar novos ficheiros."
+
+#: installTasks.py:214
+msgid "Information"
+msgstr "Informação"
+
+#: installTasks.py:228
+#, python-brace-format
+msgid ""
+"This add-on requires copying DeltaTalk files to the NVDA program directory "
+"({target_path}).\n"
+"\n"
+"Administrator permission (UAC) will be required to complete this operation.\n"
+"\n"
+"If the files are not copied, the DeltaTalk synthesizer may not work.\n"
+"\n"
+"Do you want to proceed with the installation?"
+msgstr ""
+"Este extra requer a cópia dos ficheiros do DeltaTalk para o diretório do "
+"programa NVDA ({target_path}).\n"
+"\n"
+"Será necessária a permissão do administrador (UAC) para concluir esta "
+"operação.\n"
+"\n"
+"Se os ficheiros não forem copiados, o sintetizador DeltaTalk pode não "
+"funcionar.\n"
+"\n"
+"Pretende prosseguir com a instalação?"
+
+#: installTasks.py:235
+#, python-brace-format
+msgid ""
+"This add-on requires copying DeltaTalk files to the NVDA program "
+"directory({target_path}).\n"
+"\n"
+"If the files are not copied, the DeltaTalk synthesizer may not work.\n"
+"\n"
+"Do you want to proceed with the installation?"
+msgstr ""
+"Este extra requer a cópia dos ficheiros do DeltaTalk para o diretório do "
+"programa NVDA ({target_path}).\n"
+"\n"
+"Se os ficheiros não forem copiados, o sintetizador DeltaTalk pode não "
+"funcionar.\n"
+"\n"
+"Pretende prosseguir com a instalação?"
+
+#: installTasks.py:242
+msgid "Installation Confirmation"
+msgstr "Confirmação de instalação"
+
+#: installTasks.py:250
+msgid ""
+"The copy of the files has been canceled. The synthesizer will try to copy "
+"the files before it is loaded for the first time.\n"
+"\n"
+"If this fails, the synthesizer may not work correctly."
+msgstr ""
+"A cópia dos ficheiros foi cancelada. O sintetizador tentará copiar os "
+"ficheiros antes de ser carregado pela primeira vez.\n"
+"\n"
+"Se isto falhar, o sintetizador pode não funcionar corretamente."
+
+#: installTasks.py:252
+msgid "File copy canceled"
+msgstr "Cópia de ficheiros cancelada"
+
+#: installTasks.py:271
+#, python-brace-format
+msgid ""
+"DeltaTalk files successfully copied to:\n"
+"{target_path}\n"
+"\n"
+"The DeltaTalk synthesizer is now ready to use.\n"
+"\n"
+"You can now select MicroPower DeltaTalk TTS as your synthesizer in NVDA "
+"settings."
+msgstr ""
+"Os ficheiros do DeltaTalk foram copiados com sucesso para:\n"
+"{target_path}\n"
+"\n"
+"O sintetizador DeltaTalk está agora pronto para ser utilizado.\n"
+"\n"
+"Pode agora selecionar o MicroPower DeltaTalk TTS como o seu sintetizador nas "
+"configurações do NVDA."
+
+#: installTasks.py:274
+msgid "Installation Completed"
+msgstr "Instalação concluída"
+
+#: installTasks.py:281
+msgid ""
+"Failed to copy DeltaTalk files to the target directory.\n"
+"\n"
+"The synthesizer will try to copy the files before it is loaded for the first "
+"time. If this fails, you may need to:\n"
+"1. Run NVDA as administrator and reinstall the add-on, or\n"
+"2. Manually copy the files from the add-on directory to the NVDA program "
+"folder.\n"
+"\n"
+"Please check the NVDA log for more details."
+msgstr ""
+"Falha ao copiar os ficheiros do DeltaTalk para o diretório de destino.\n"
+"\n"
+"O sintetizador tentará copiar os ficheiros antes de ser carregado pela "
+"primeira vez. Se isto falhar, poderá ser necessário:\n"
+"1. Executar o NVDA como administrador e reinstalar o extra, ou\n"
+"2. Copiar manualmente os ficheiros do diretório do extra para a pasta do "
+"programa NVDA.\n"
+"\n"
+"Abra o visualizador de registo do NVDA para obter mais detalhes."
+
+#: installTasks.py:295
+#, python-brace-format
+msgid ""
+"Error during installation: {error}\n"
+"\n"
+"Please check the NVDA log for more details."
+msgstr ""
+"Erro durante a instalação: {error}\n"
+"\n"
+"Abra o visualizador de registo do NVDA para obter mais detalhes."

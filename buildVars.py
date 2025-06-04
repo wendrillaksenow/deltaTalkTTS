@@ -26,7 +26,7 @@ addon_info = {
 	"addon_description": _("""DeltaTalk is the first high-quality speech synthesizer available for the Portuguese language.
 This add-on implements NVDA compatibility with this synthesizer."""),
 	# version
-	"addon_version": "0.1",
+	"addon_version": "0.2",
 	# Author(s)
 	"addon_author": "Patrick Barboza <patrickbarboza774@gmail.com> & Wendrill Aksenow Brandão <wendrillaksenow@gmail.com",
 	# URL for the add-on documentation support
@@ -60,7 +60,8 @@ This add-on implements NVDA compatibility with this synthesizer."""),
 pythonSources = ["addon/synthDrivers/deltatalk.py"]
 
 # Files that contain strings for translation. Usually your python sources
-i18nSources = pythonSources + ["buildVars.py"]
+i18nSources = pythonSources + ["buildVars.py", "installTasks.py"]
+
 # Files that will be ignored when building the nvda-addon file
 # Paths are relative to the addon directory, not to the root directory of your addon sources.
 excludedFiles = []
