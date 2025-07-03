@@ -26,9 +26,9 @@ addon_info = {
 	"addon_description": _("""DeltaTalk is the first high-quality speech synthesizer available for the Portuguese language.
 This add-on implements NVDA compatibility with this synthesizer."""),
 	# version
-	"addon_version": "0.2",
+	"addon_version": "0.3",
 	# Author(s)
-	"addon_author": "Patrick Barboza <patrickbarboza774@gmail.com> & Wendrill Aksenow Brandão <wendrillaksenow@gmail.com",
+	"addon_author": "Patrick Barboza <patrickbarboza774@gmail.com>, Wendrill Aksenow Brandão <wendrillaksenow@gmail.com",
 	# URL for the add-on documentation support
 	"addon_url": "https://github.com/wendrillaksenow/deltaTalkTTS",
 	# URL for the add-on repository where the source code can be found
@@ -96,4 +96,9 @@ brailleTables = {}
 # with keys inside recording the following attributes:
 # displayName (name of the speech dictionary shown to users and translatable),
 # mandatory (True when always enabled, False when not.
-symbolDictionaries = {}
+symbolDictionaries = {
+	"deltatalk": {
+		"displayName": _("DeltaTalk Symbol Dictionary"),
+		"mandatory": False
+	}
+}

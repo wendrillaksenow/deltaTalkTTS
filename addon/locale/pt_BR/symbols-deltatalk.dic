@@ -1,0 +1,35 @@
+﻿symbols:
+!	Exclamação	all	norep
+"	Aspas	most	norep
+$	Sifrão	char	always
+%	Por cento	char	always
+&	E comercial	some	never
+'	Apóstrofo	all	norep
+(	Abre parênteses	most	norep
+)	Fecha parênteses	most	norep
+*	Asterisco	char	always
++	Mais	char	always
+,	Vírgula	all	norep
+-	Hífen	most	norep
+.	Ponto	all	norep
+/	Barra	char	always
+:	Dois pontos	most	norep
+∶	Razão	most	norep
+;	Ponto e vírgula	most	norep
+<	Menor que	char	always
+=	Igual	char	always
+>	Maior que	char	always
+?	Interrogação	all	norep
+@	Arroba	char	always
+•	Ponto	some	never
+[	Abre colchete	most	norep
+\	Barra invertida	char	always
+\#	Sustenido	char	always
+]	Fecha colchete	most	norep
+_	sublinhado	char	always
+`	Crase	char	always
+{	Abre chave	most	norep
+|	Barra vertical	some	never
+}	Fecha chave	most	norep
+ª	Ordinal Feminino	all	norep
+º	Ordinal Masculino	all	norep

@@ -5,111 +5,228 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 'deltaTalk' '0.2'\n"
+"Project-Id-Version: 'deltaTalk' '0.3'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
-"POT-Creation-Date: 2025-06-04 00:32-0300\n"
-"PO-Revision-Date: 2025-06-04 12:52-0300\n"
+"POT-Creation-Date: 2025-07-02 21:24-0300\n"
+"PO-Revision-Date: 2025-07-03 00:29-0300\n"
 "Last-Translator: \n"
-"Language-Team: Wendrill Aksenow Brandão <wendrillaksenow@gmail.com\n"
+"Language-Team: Wendrill Aksenow Brandão <wendrillaksenow@gmail.com>\n"
 "Language: pt_PT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4\n"
 
+#: addon\synthDrivers\deltatalk.py:32
+msgid "Operation completed successfully"
+msgstr "Operação concluída com êxito"
+
+#: addon\synthDrivers\deltatalk.py:33
+msgid "The synthesizer is not initialized"
+msgstr "O sintetizador não foi inicializado"
+
+#: addon\synthDrivers\deltatalk.py:34
+msgid "The synthesizer is busy processing another task"
+msgstr "O sintetizador está ocupado a processar outra tarefa"
+
+#: addon\synthDrivers\deltatalk.py:35
+msgid "Invalid command issued to the synthesizer"
+msgstr "Comando inválido emitido para o sintetizador"
+
+#: addon\synthDrivers\deltatalk.py:36
+msgid "Failed to initialize audio processing subsystem"
+msgstr "Falha ao inicializar o subsistema de processamento de áudio"
+
+#: addon\synthDrivers\deltatalk.py:37
+msgid "Failed to open the required file"
+msgstr "Falha ao abrir o ficheiro necessário"
+
+#: addon\synthDrivers\deltatalk.py:38
+msgid "Failed to write to the specified file"
+msgstr "Falha ao escrever no ficheiro especificado"
+
+#: addon\synthDrivers\deltatalk.py:39
+msgid "Failed to initialize the synthesizer engine"
+msgstr "Falha ao inicializar o motor do sintetizador"
+
+#: addon\synthDrivers\deltatalk.py:40
+msgid "Insufficient memory to process the request"
+msgstr "Memória insuficiente para processar o pedido"
+
+#: addon\synthDrivers\deltatalk.py:41
+msgid "Audio device is already in use by another program"
+msgstr "O dispositivo de áudio já está a ser utilizado por outro programa"
+
+#: addon\synthDrivers\deltatalk.py:42
+msgid "Failed to open the audio device"
+msgstr "Falha ao abrir o dispositivo de áudio"
+
+#: addon\synthDrivers\deltatalk.py:43
+msgid "Failed to send audio buffer to the sound card"
+msgstr "Falha ao enviar a memória intermédia de áudio para a placa de som"
+
+#: addon\synthDrivers\deltatalk.py:44
+msgid "Audio format not supported by the sound card"
+msgstr "Formato de áudio não suportado pela placa de som"
+
+#: addon\synthDrivers\deltatalk.py:45
+msgid "Audio output device is not available"
+msgstr "O dispositivo de saída de áudio não está disponível"
+
+#: addon\synthDrivers\deltatalk.py:46
+msgid "Error communicating with the sound card driver"
+msgstr "Erro de comunicação com o controlador da placa de som"
+
+#: addon\synthDrivers\deltatalk.py:47
+msgid "Insufficient memory to store synthesized audio"
+msgstr "Memória insuficiente para armazenar áudio sintetizado"
+
+#: addon\synthDrivers\deltatalk.py:48
+msgid "The provided value is out of range"
+msgstr "O valor fornecido está fora do intervalo"
+
+#. TTS_PCM_FINISHED
+#: addon\synthDrivers\deltatalk.py:49 addon\synthDrivers\deltatalk.py:505
+msgid "PCM audio processing completed"
+msgstr "Processamento de áudio PCM concluído"
+
+#: addon\synthDrivers\deltatalk.py:50
+msgid "Internal signal processing error"
+msgstr "Erro de processamento do sinal interno"
+
+#: addon\synthDrivers\deltatalk.py:51
+msgid "DSP file not found"
+msgstr "Ficheiro DSP não encontrado"
+
+#: addon\synthDrivers\deltatalk.py:52
+msgid "Prosody modeling file not found"
+msgstr "Ficheiro de modelação de prosódia não encontrado"
+
+#: addon\synthDrivers\deltatalk.py:53
+msgid ""
+"The number of simultaneous instances of the synthesizer has been extrapolated"
+msgstr "O número de instâncias simultâneas do sintetizador foi extrapolado"
+
 #. Execute batch file with elevation
-#: addon\synthDrivers\deltatalk.py:102
+#: addon\synthDrivers\deltatalk.py:130 installTasks.py:70
 #, python-brace-format
 msgid "Executing batch file with elevation: {path}"
 msgstr "Execução de ficheiro batch com elevação: {path}"
 
-#: addon\synthDrivers\deltatalk.py:106
+#: addon\synthDrivers\deltatalk.py:133
 msgid "Files copied successfully with elevated permissions"
 msgstr "Ficheiros copiados com sucesso com permissões elevadas"
 
-#: addon\synthDrivers\deltatalk.py:109
+#: addon\synthDrivers\deltatalk.py:136 installTasks.py:75
 #, python-brace-format
 msgid "Batch file execution failed with code: {code}"
 msgstr "A execução do ficheiro batch falhou com o código: {code}"
 
-#: addon\synthDrivers\deltatalk.py:117
+#: addon\synthDrivers\deltatalk.py:143 installTasks.py:81
 #, python-brace-format
 msgid "Failed to delete temporary batch file: {error}"
 msgstr "Falha ao eliminar o ficheiro batch temporário: {error}"
 
-#: addon\synthDrivers\deltatalk.py:120
+#: addon\synthDrivers\deltatalk.py:145 installTasks.py:83
 #, python-brace-format
 msgid "Error creating/executing batch file: {error}"
 msgstr "Erro ao criar/executar ficheiro batch: {error}"
 
-#. Translators: Description for a speech synthesizer for NVDA.
-#: addon\synthDrivers\deltatalk.py:127
+#: addon\synthDrivers\deltatalk.py:151
 msgid "MicroPower DeltaTalk TTS"
 msgstr "MicroPower DeltaTalk TTS"
 
-#: addon\synthDrivers\deltatalk.py:153
+#: addon\synthDrivers\deltatalk.py:177
 #, python-brace-format
-msgid "check: Checking the path: {path}"
-msgstr "verificação: A verificar o caminho: {path}"
+msgid "Checking the path: {path}"
+msgstr "A verificar caminho: {path}"
 
-#: addon\synthDrivers\deltatalk.py:155
-msgid "check: Dtalk32T.dll not found"
-msgstr "verificação: Dtalk32T.dll não encontrado"
+#: addon\synthDrivers\deltatalk.py:179
+msgid "Dtalk32T.dll not found"
+msgstr "Dtalk32T.dll não encontrado"
 
-#: addon\synthDrivers\deltatalk.py:159
-msgid "check: Dtalk32T.dll loaded successfully"
-msgstr "verificação: Dtalk32T.dll carregado com sucesso"
+#: addon\synthDrivers\deltatalk.py:183
+msgid "Dtalk32T.dll loaded successfully"
+msgstr "Dtalk32T.dll carregado com sucesso"
 
-#: addon\synthDrivers\deltatalk.py:162
+#: addon\synthDrivers\deltatalk.py:186
 #, python-brace-format
-msgid "check: Failed to load DLL: {error}"
-msgstr "verificação: Falha ao carregar a DLL: {error}"
+msgid "Failed to load DLL: {error}"
+msgstr "Falha ao carregar a DLL: {error}"
 
-#: addon\synthDrivers\deltatalk.py:194
+#: addon\synthDrivers\deltatalk.py:230
+#, python-brace-format
+msgid "Dictionary file {file} missing in NVDA. Will be copied."
+msgstr "Ficheiro de dicionário {file} em falta no NVDA. Será copiado."
+
+#: addon\synthDrivers\deltatalk.py:237
+#, python-brace-format
+msgid "Dictionary file {file} is outdated in NVDA. Will be copied."
+msgstr ""
+"O ficheiro de dicionário {file} está desatualizado no NVDA. Será copiado."
+
+#: addon\synthDrivers\deltatalk.py:239 installTasks.py:173
+#, python-brace-format
+msgid "Dictionary file {file} is up to date."
+msgstr "O ficheiro de dicionário {file} está atualizado."
+
+#: addon\synthDrivers\deltatalk.py:241 installTasks.py:175
+#, python-brace-format
+msgid "Dictionary file {file} not found in add-on. Skipping."
+msgstr "Ficheiro de dicionário {file} não encontrado no extra. Saltar."
+
+#: addon\synthDrivers\deltatalk.py:250
 #, python-brace-format
 msgid "Required file not found in add-on: {file}"
 msgstr "Ficheiro necessário não encontrado no extra: {file}"
 
-#: addon\synthDrivers\deltatalk.py:197
+#: addon\synthDrivers\deltatalk.py:254
 #, python-brace-format
-msgid "Missing files in NVDA: {files}. Attempting to copy from add-on."
-msgstr ""
-"Ficheiros em falta no NVDA: {files}. A tentar copiar a partir do extra."
+msgid "File missing in NVDA: {file}."
+msgstr "Ficheiro em falta no NVDA: {file}."
 
-#: addon\synthDrivers\deltatalk.py:205
+#: addon\synthDrivers\deltatalk.py:257
+#, python-brace-format
+msgid ""
+"Missing or outdated files in NVDA: {files}. Attempting to copy from add-on."
+msgstr ""
+"Ficheiros em falta ou desatualizados no NVDA: {files}. A tentar copiar a "
+"partir do extra."
+
+#: addon\synthDrivers\deltatalk.py:265
 msgid "Elevated permissions required. Attempting elevated copy."
 msgstr "São necessárias permissões elevadas. Tentativa de cópia elevada."
 
-#: addon\synthDrivers\deltatalk.py:209
-msgid "Elevated copy failed. Attempting fallback individual copy."
+#: addon\synthDrivers\deltatalk.py:269
+msgid ""
+"Elevated copy failed. Synthesizer may use outdated dictionary or some files "
+"may be missing."
 msgstr ""
-"A cópia elevada falhou. Tentativa de cópia individual como alternativa."
+"A cópia elevada falhou. O sintetizador pode utilizar um dicionário "
+"desatualizado ou alguns ficheiros podem estar em falta."
 
-#: addon\synthDrivers\deltatalk.py:217 addon\synthDrivers\deltatalk.py:231
+#: addon\synthDrivers\deltatalk.py:271
+msgid "Normal permissions sufficient. Copying files."
+msgstr "As permissões normais são suficientes. A copiar ficheiros."
+
+#: addon\synthDrivers\deltatalk.py:278
 #, python-brace-format
 msgid "Copied: {file}"
 msgstr "Copiado: {file}"
 
-#: addon\synthDrivers\deltatalk.py:219
+#: addon\synthDrivers\deltatalk.py:281
 #, python-brace-format
-msgid "Permission denied copying {file}. File will be missing."
-msgstr "Permissão negada ao copiar {file}. O ficheiro ficará em falta."
+msgid "Error copying files: {error}"
+msgstr "Erro ao copiar ficheiros: {error}"
 
-#: addon\synthDrivers\deltatalk.py:221 addon\synthDrivers\deltatalk.py:233
+#: addon\synthDrivers\deltatalk.py:284
 #, python-brace-format
-msgid "Error copying {file}: {error}"
-msgstr "Erro ao copiar {file}: {error}"
+msgid "DeltaTalk files successfully copied/updated to {path}."
+msgstr ""
+"Os ficheiros do DeltaTalk foram copiados/actualizados com sucesso para "
+"{path}."
 
-#. Normal copy without elevation
-#: addon\synthDrivers\deltatalk.py:224
-msgid "Normal permissions sufficient. Copying files."
-msgstr "As permissões normais são suficientes. A copiar ficheiros."
-
-#: addon\synthDrivers\deltatalk.py:237
-msgid "File copy operation completed successfully."
-msgstr "A operação de cópia de ficheiros foi concluída com êxito."
-
-#: addon\synthDrivers\deltatalk.py:239
+#: addon\synthDrivers\deltatalk.py:286
 msgid ""
 "Some files may not have been copied. Synthesizer functionality may be "
 "limited."
@@ -117,173 +234,382 @@ msgstr ""
 "Alguns ficheiros podem não ter sido copiados. A funcionalidade do "
 "sintetizador pode ser limitada."
 
-#: addon\synthDrivers\deltatalk.py:243
+#: addon\synthDrivers\deltatalk.py:290
 #, python-brace-format
 msgid "DLL not found in: {path}"
 msgstr "DLL não encontrada em: {path}"
 
-#: addon\synthDrivers\deltatalk.py:244
+#: addon\synthDrivers\deltatalk.py:291
 msgid "DeltaTalk DLL not found. Check the installation of the add-on."
 msgstr ""
 "A DLL do DeltaTalk não foi encontrada. Verifique a instalação do extra."
 
-#: addon\synthDrivers\deltatalk.py:255
-msgid "__init__: DLL loaded successfully"
-msgstr "__init__: DLL carregada com sucesso"
+#: addon\synthDrivers\deltatalk.py:302
+msgid "DLL loaded successfully"
+msgstr "DLL carregada com sucesso"
 
-#: addon\synthDrivers\deltatalk.py:257
+#: addon\synthDrivers\deltatalk.py:304
 #, python-brace-format
 msgid "Error loading DeltaTalk DLL in {path}: {error}"
 msgstr "Erro ao carregar a DLL do DeltaTalk em {path}: {error}"
 
-#: addon\synthDrivers\deltatalk.py:259
+#: addon\synthDrivers\deltatalk.py:306
 #, python-brace-format
 msgid "Failed to load DLL Dtalk32T.dll: {error}"
 msgstr "Falha ao carregar a DLL Dtalk32T.dll: {error}"
 
-#: addon\synthDrivers\deltatalk.py:265
+#: addon\synthDrivers\deltatalk.py:312
 msgid "DeltaTalk synthesizer failed to initialize"
 msgstr "Falha na inicialização do sintetizador DeltaTalk"
 
-#: addon\synthDrivers\deltatalk.py:269
+#: addon\synthDrivers\deltatalk.py:318 addon\synthDrivers\deltatalk.py:377
+#, python-brace-format
+msgid "Error managing symbol dictionary: {error}"
+msgstr "Erro na gestão do dicionário de símbolos: {error}"
+
+#: addon\synthDrivers\deltatalk.py:334 installTasks.py:34
+#, python-brace-format
+msgid "Error calculating hash for {file}: {error}"
+msgstr "Erro ao calcular o hash para {file}: {error}"
+
+#: addon\synthDrivers\deltatalk.py:339
 msgid "Attempt to initialize TTS without the DLL loaded."
 msgstr "Tentativa de inicialização do TTS sem a DLL carregada."
 
-#: addon\synthDrivers\deltatalk.py:273
+#: addon\synthDrivers\deltatalk.py:342
 #, python-brace-format
 msgid "NVDA directory: {path}"
 msgstr "Diretório do NVDA: {path}"
 
-#: addon\synthDrivers\deltatalk.py:274
+#: addon\synthDrivers\deltatalk.py:343
 #, python-brace-format
 msgid "Files in the folder: {files}"
 msgstr "Ficheiros na pasta: {files}"
 
-#: addon\synthDrivers\deltatalk.py:276
+#: addon\synthDrivers\deltatalk.py:345
 #, python-brace-format
 msgid "Original work directory: {path}"
 msgstr "Diretório de trabalho original: {path}"
 
-#: addon\synthDrivers\deltatalk.py:278
+#: addon\synthDrivers\deltatalk.py:347
 #, python-brace-format
 msgid "Work directory changed to: {path}"
 msgstr "Diretório de trabalho alterado para: {path}"
 
-#: addon\synthDrivers\deltatalk.py:281
+#: addon\synthDrivers\deltatalk.py:349
 msgid "Starting TTS initialization"
 msgstr "A iniciar a inicialização do TTS"
 
-#: addon\synthDrivers\deltatalk.py:284 addon\synthDrivers\deltatalk.py:291
+#: addon\synthDrivers\deltatalk.py:352 addon\synthDrivers\deltatalk.py:359
 #, python-brace-format
 msgid "Error initializing TTS: {error}"
 msgstr "Erro ao inicializar o TTS: {error}"
 
-#: addon\synthDrivers\deltatalk.py:287
+#: addon\synthDrivers\deltatalk.py:352 addon\synthDrivers\deltatalk.py:476
+#: addon\synthDrivers\deltatalk.py:509 addon\synthDrivers\deltatalk.py:561
+#: addon\synthDrivers\deltatalk.py:566 addon\synthDrivers\deltatalk.py:625
+#: addon\synthDrivers\deltatalk.py:634 addon\synthDrivers\deltatalk.py:697
+#: addon\synthDrivers\deltatalk.py:778
+msgid "Unknown error"
+msgstr "Erro desconhecido"
+
+#: addon\synthDrivers\deltatalk.py:355
 #, python-brace-format
 msgid "DeltaTalk initialized. Instance: {instance}"
 msgstr "DeltaTalk inicializado. Instância: {instance}"
 
-#: addon\synthDrivers\deltatalk.py:296
+#: addon\synthDrivers\deltatalk.py:364
 msgid "Work directory restored"
 msgstr "Diretório de trabalho restaurado"
 
-#: addon\synthDrivers\deltatalk.py:306
+#: addon\synthDrivers\deltatalk.py:373
+msgid "DeltaTalk symbol dictionary automatically activated"
+msgstr "Dicionário de símbolos do DeltaTalk ativado automaticamente"
+
+#: addon\synthDrivers\deltatalk.py:375
+msgid "DeltaTalk symbol dictionary already active"
+msgstr "O dicionário de símbolos do DeltaTalk já está ativo"
+
+#: addon\synthDrivers\deltatalk.py:396
+#, python-brace-format
+msgid ""
+"nvwave configured: {rate}Hz, {channels} channels, {bits} bits, device: "
+"{device}"
+msgstr ""
+"nvwave configurado: {rate}Hz, {channels} canais, {bits} bits, dispositivo: "
+"{device}"
+
+#: addon\synthDrivers\deltatalk.py:399
+#, python-brace-format
+msgid "Error configuring nvwave: {error}"
+msgstr "Erro ao configurar o nvwave: {error}"
+
+#: addon\synthDrivers\deltatalk.py:409
+msgid "Audio thread started"
+msgstr "Thread de áudio iniciada"
+
+#. Now accepts (text, index)
+#: addon\synthDrivers\deltatalk.py:419
+#, python-brace-format
+msgid "Processing text in audio worker: {text}, index: {index}"
+msgstr "A processar texto no gestor da fila de áudio: {text}, índice: {index}"
+
+#: addon\synthDrivers\deltatalk.py:432
+#, python-brace-format
+msgid "Error in audio worker: {error}"
+msgstr "Erro no gestor da fila de áudio: {error}"
+
+#: addon\synthDrivers\deltatalk.py:437
+msgid ""
+"Falling back to direct playback due to missing instance or nvwave player"
+msgstr ""
+"A regressar à reprodução direta devido à falta de uma instância ou do leitor "
+"nvwave"
+
+#: addon\synthDrivers\deltatalk.py:442
+msgid "Waiting for previous synthesis to complete"
+msgstr "A aguardar a conclusão da síntese anterior"
+
+#: addon\synthDrivers\deltatalk.py:447
+msgid "Synthesis timeout, falling back to direct playback"
+msgstr "Tempo limite excedido para a síntese, a regressar à reprodução direta"
+
+#: addon\synthDrivers\deltatalk.py:453
+#, python-brace-format
+msgid "Attempting to generate audio for text: {text}, index: {index}"
+msgstr "A tentar gerar áudio para texto: {text}, índice: {index}"
+
+#: addon\synthDrivers\deltatalk.py:456
+#, python-brace-format
+msgid "Starting multi-block audio generation, text length: {length}"
+msgstr ""
+"A iniciar a geração de áudio multi-bloco, comprimento do texto: {length}"
+
+#: addon\synthDrivers\deltatalk.py:461
+#, python-brace-format
+msgid "Calling TTSENG_GenAudioBuffer with NEW_MULTI_BLOCK, buffer size: {size}"
+msgstr ""
+"Chamada de TTSENG_GenAudioBuffer com NEW_MULTI_BLOCK, tamanho da memória "
+"intermédia: {size}"
+
+#: addon\synthDrivers\deltatalk.py:471
+#, python-brace-format
+msgid ""
+"TTSENG_GenAudioBuffer (NEW_MULTI_BLOCK) returned: {result}, bytes written: "
+"{bytes}"
+msgstr ""
+"O TTSENG_GenAudioBuffer (NEW_MULTI_BLOCK) devolveu: {result}, bytes "
+"escritos: {bytes}"
+
+#: addon\synthDrivers\deltatalk.py:475
+#, python-brace-format
+msgid "Error starting multi-block audio: {error} ({code})"
+msgstr "Erro ao iniciar áudio multi-bloco: {error} ({code})"
+
+#: addon\synthDrivers\deltatalk.py:484
+#, python-brace-format
+msgid "Feeding initial audio data to nvwave: {bytes} bytes"
+msgstr "Envio dos dados de áudio iniciais para o nvwave: {bytes} bytes"
+
+#: addon\synthDrivers\deltatalk.py:491
+#, python-brace-format
+msgid "Calling TTSENG_GenAudioBuffer with NEXT_BLOCK, buffer size: {size}"
+msgstr ""
+"Chamada de TTSENG_GenAudioBuffer com NEXT_BLOCK, tamanho da memória "
+"intermédia: {size}"
+
+#: addon\synthDrivers\deltatalk.py:501
+#, python-brace-format
+msgid ""
+"TTSENG_GenAudioBuffer (NEXT_BLOCK) returned: {result}, bytes written: {bytes}"
+msgstr ""
+"O TTSENG_GenAudioBuffer (NEXT_BLOCK) devolveu: {result}, bytes escritos: "
+"{bytes}"
+
+#: addon\synthDrivers\deltatalk.py:508
+#, python-brace-format
+msgid "Error processing multi-block audio: {error} ({code})"
+msgstr "Erro no processamento do áudio em multi-bloco: {error} ({code})"
+
+#: addon\synthDrivers\deltatalk.py:515
+#, python-brace-format
+msgid "Feeding audio data to nvwave: {bytes} bytes"
+msgstr "Envio dos dados de áudio para o nvwave: {bytes} bytes"
+
+#: addon\synthDrivers\deltatalk.py:521
+#, python-brace-format
+msgid "Audio successfully fed to nvwave for text: {text}"
+msgstr "Áudio enviado com sucesso para o nvwave para texto: {text}"
+
+#: addon\synthDrivers\deltatalk.py:524
+#, python-brace-format
+msgid "Exception in audio generation: {error}"
+msgstr "Exceção na geração de áudio: {error}"
+
+#: addon\synthDrivers\deltatalk.py:543
+msgid "Waiting for previous direct playback to complete"
+msgstr "A aguardar a conclusão da reprodução direta anterior"
+
+#: addon\synthDrivers\deltatalk.py:548
+msgid "Direct playback timeout, skipping"
+msgstr "Tempo limite excedido para a reprodução direta, saltar"
+
+#: addon\synthDrivers\deltatalk.py:554
+#, python-brace-format
+msgid "Using direct playback for text: {text}"
+msgstr "A utilizar a reprodução direta para texto: {text}"
+
+#: addon\synthDrivers\deltatalk.py:560
+#, python-brace-format
+msgid "Error when attaching text: {error}"
+msgstr "Erro ao anexar texto: {error}"
+
+#: addon\synthDrivers\deltatalk.py:563
+#, python-brace-format
+msgid "Attached text: {text}"
+msgstr "Texto anexado: {text}"
+
+#: addon\synthDrivers\deltatalk.py:565
+#, python-brace-format
+msgid "Error when speaking text: {error}"
+msgstr "Erro ao falar texto: {error}"
+
+#: addon\synthDrivers\deltatalk.py:568
+#, python-brace-format
+msgid "Spoken text: {text}"
+msgstr "Texto falado: {text}"
+
+#: addon\synthDrivers\deltatalk.py:570
+#, python-brace-format
+msgid "Error when processing text: {error}"
+msgstr "Erro no processamento do texto: {error}"
+
+#. timeout=1.0
+#: addon\synthDrivers\deltatalk.py:581
+#, python-brace-format
+msgid "Text queued for nvwave: {text}, index: {index}"
+msgstr "Texto em fila de espera para o nvwave: {text}, índice: {index}"
+
+#: addon\synthDrivers\deltatalk.py:583
+msgid "Audio queue full, using direct playback"
+msgstr "Fila de áudio cheia, a utilizar a reprodução direta"
+
+#: addon\synthDrivers\deltatalk.py:586
+msgid "Using direct playback due to nvwave not available"
+msgstr "A utilizar a reprodução direta devido ao nvwave não estar disponível"
+
+#: addon\synthDrivers\deltatalk.py:591
+msgid "Speech attempt without initialized instance."
+msgstr "Tentativa de discurso sem instância inicializada."
+
+#: addon\synthDrivers\deltatalk.py:624
 #, python-brace-format
 msgid "Error when applying settings: {error} ({code})"
 msgstr "Erro ao aplicar as definições: {error} ({code})"
 
-#: addon\synthDrivers\deltatalk.py:309
+#: addon\synthDrivers\deltatalk.py:627
 #, python-brace-format
 msgid "Settings applied: rate={rate}, volume={volume}, pitch={pitch}"
 msgstr ""
 "Definições aplicadas: velocidade={rate}, volume={volume}, entoação={pitch}"
 
-#: addon\synthDrivers\deltatalk.py:316
+#: addon\synthDrivers\deltatalk.py:633
 #, python-brace-format
 msgid "Error when applying voice: {error} ({code})"
 msgstr "Erro ao aplicar a voz: {error} ({code})"
 
-#: addon\synthDrivers\deltatalk.py:319
+#: addon\synthDrivers\deltatalk.py:636
 #, python-brace-format
 msgid "Applied voice: {voice} (ID: {id})"
 msgstr "Voz aplicada: {voice} (ID: {id})"
 
-#: addon\synthDrivers\deltatalk.py:324
-msgid "Speech attempt without initialized instance."
-msgstr "Tentativa de discurso sem instância inicializada."
-
-#: addon\synthDrivers\deltatalk.py:359
-#, python-brace-format
-msgid "Error when attaching text: {error}"
-msgstr "Erro ao anexar texto: {error}"
-
-#: addon\synthDrivers\deltatalk.py:361
-#, python-brace-format
-msgid "Attached text: {text}"
-msgstr "Texto anexado: {text}"
-
-#: addon\synthDrivers\deltatalk.py:363
-#, python-brace-format
-msgid "Error when speaking text: {error}"
-msgstr "Erro ao falar texto: {error}"
-
-#: addon\synthDrivers\deltatalk.py:365
-#, python-brace-format
-msgid "Spoken text: {text}"
-msgstr "Texto falado: {text}"
-
-#: addon\synthDrivers\deltatalk.py:367
-#, python-brace-format
-msgid "Error when processing text: {error}"
-msgstr "Erro no processamento do texto: {error}"
-
-#: addon\synthDrivers\deltatalk.py:389
+#: addon\synthDrivers\deltatalk.py:658
 #, python-brace-format
 msgid "Speed set to {rate} (converted from {original})"
 msgstr "Velocidade definida para {rate} (convertida de {original})"
 
-#: addon\synthDrivers\deltatalk.py:401
+#: addon\synthDrivers\deltatalk.py:670
 #, python-brace-format
 msgid "Pitch set to {pitch} (converted from {original})"
 msgstr "Entoação definida para {pitch} (convertida de {original})"
 
-#: addon\synthDrivers\deltatalk.py:413
+#: addon\synthDrivers\deltatalk.py:682
 #, python-brace-format
 msgid "Volume set to {volume} (converted from {original})"
 msgstr "Volume definido para {volume} (convertido de {original})"
 
-#: addon\synthDrivers\deltatalk.py:427
+#: addon\synthDrivers\deltatalk.py:696
 #, python-brace-format
 msgid "Error configuring voice: {error} ({code})"
 msgstr "Erro ao configurar a voz: {error} ({code})"
 
-#: addon\synthDrivers\deltatalk.py:430
+#: addon\synthDrivers\deltatalk.py:699
 #, python-brace-format
 msgid "Voice changed to {voice}"
 msgstr "A voz mudou para {voice}"
 
-#: addon\synthDrivers\deltatalk.py:445
+#: addon\synthDrivers\deltatalk.py:711
+#, python-brace-format
+msgid "Reconfiguring nvwave for new sample rate: {rate}Hz"
+msgstr "A reconfigurar o nvwave para a nova taxa de amostragem: {rate}Hz"
+
+#: addon\synthDrivers\deltatalk.py:723
 msgid "Text paused"
 msgstr "Texto pausado"
 
-#: addon\synthDrivers\deltatalk.py:448
+#: addon\synthDrivers\deltatalk.py:726
 msgid "Text resumed"
 msgstr "Texto retomado"
 
-#: addon\synthDrivers\deltatalk.py:453
+#: addon\synthDrivers\deltatalk.py:730
+msgid "nvwave paused"
+msgstr "nvwave em pausa"
+
+#: addon\synthDrivers\deltatalk.py:730
+msgid "nvwave resumed"
+msgstr "nvwave retomado"
+
+#: addon\synthDrivers\deltatalk.py:732
+#, python-brace-format
+msgid "Error pausing/resuming nvwave: {error}"
+msgstr "Erro ao pausar/retomar o nvwave: {error}"
+
+#: addon\synthDrivers\deltatalk.py:738
 msgid "Text stopped"
 msgstr "Texto parado"
 
-#: addon\synthDrivers\deltatalk.py:461
+#: addon\synthDrivers\deltatalk.py:742
+msgid "nvwave stopped"
+msgstr "nvwave parado"
+
+#: addon\synthDrivers\deltatalk.py:744
+#, python-brace-format
+msgid "Error stopping nvwave: {error}"
+msgstr "Erro ao parar o nvwave: {error}"
+
+#: addon\synthDrivers\deltatalk.py:764
+msgid "Audio thread did not terminate gracefully"
+msgstr "A thread de áudio não terminou de forma graciosa"
+
+#: addon\synthDrivers\deltatalk.py:769
+msgid "nvwave player closed"
+msgstr "leitor nvwave fechado"
+
+#: addon\synthDrivers\deltatalk.py:771
+#, python-brace-format
+msgid "Error closing nvwave player: {error}"
+msgstr "Erro ao fechar o leitor nvwave: {error}"
+
+#: addon\synthDrivers\deltatalk.py:777
 #, python-brace-format
 msgid "Error when closing: {error} ({code})"
 msgstr "Erro ao fechar: {error} ({code})"
 
-#: addon\synthDrivers\deltatalk.py:464
+#: addon\synthDrivers\deltatalk.py:780
 msgid "DeltaTalk synthesizer successfully closed"
 msgstr "Sintetizador DeltaTalk fechado com sucesso"
 
-#: addon\synthDrivers\deltatalk.py:466
+#: addon\synthDrivers\deltatalk.py:782
 #, python-brace-format
 msgid "Error closing the synthesizer: {error}"
 msgstr "Erro ao fechar o sintetizador: {error}"
@@ -307,147 +633,318 @@ msgstr ""
 "para a língua portuguesa.\n"
 "Este extra implementa a compatibilidade do NVDA com este sintetizador."
 
-#: installTasks.py:188
-#, python-brace-format
-msgid ""
-"Error: Source directory not found:\n"
-"{addon_path}"
-msgstr ""
-"Erro: Diretório de origem não encontrado:\n"
-"{addon_path}"
+#: buildVars.py:101
+msgid "DeltaTalk Symbol Dictionary"
+msgstr "Dicionário de símbolos do DeltaTalk"
 
-#: installTasks.py:189 installTasks.py:297
+#: installTasks.py:73
+msgid "Batch file executed successfully"
+msgstr "Ficheiro batch executado com sucesso"
+
+#: installTasks.py:94 installTasks.py:112
+#, python-brace-format
+msgid "Copying {source} to {target}"
+msgstr "A copiar {source} para {target}"
+
+#: installTasks.py:96
+#, python-brace-format
+msgid "Successfully copied {count} files"
+msgstr "Foram copiados {count} ficheiros com sucesso"
+
+#: installTasks.py:99
+#, python-brace-format
+msgid "Error during elevated copy operation: {error}"
+msgstr "Erro durante a operação de cópia elevada: {error}"
+
+#: installTasks.py:115
+#, python-brace-format
+msgid "Successfully copied {count} files without elevation"
+msgstr "Foram copiados {count} ficheiros com sucesso sem elevação"
+
+#: installTasks.py:118
+#, python-brace-format
+msgid "Error during normal copy operation: {error}"
+msgstr "Erro durante a operação normal de cópia: {error}"
+
+#: installTasks.py:135
+msgid "DeltaTalk installation started"
+msgstr "Instalação do DeltaTalk iniciada"
+
+#: installTasks.py:136
+#, python-brace-format
+msgid "Source path: {path}"
+msgstr "Caminho de origem: {path}"
+
+#: installTasks.py:137 installTasks.py:450
+#, python-brace-format
+msgid "Target path: {path}"
+msgstr "Caminho de destino: {path}"
+
+#: installTasks.py:141
+#, python-brace-format
+msgid "Source directory not found: {path}"
+msgstr "Diretório de origem não encontrado: {path}"
+
+#: installTasks.py:145 installTasks.py:324
 msgid "Installation Error"
 msgstr "Erro de instalação"
 
-#: installTasks.py:201
-msgid "No DeltaTalk files found in the add-on package."
-msgstr "Não foram encontrados ficheiros do DeltaTalk no pacote do extra."
+#: installTasks.py:164
+#, python-brace-format
+msgid "Dictionary file {file} missing in target. Will be copied."
+msgstr "Ficheiro de dicionário {file} em falta no destino. Será copiado."
 
-#: installTasks.py:202 installTasks.py:286
-msgid "Installation Warning"
-msgstr "Aviso de instalação"
+#: installTasks.py:171
+#, python-brace-format
+msgid "Dictionary file {file} has changed. Will be copied."
+msgstr "O ficheiro de dicionário {file} foi alterado. Será copiado."
 
-#: installTasks.py:212
+#: installTasks.py:184
+#, python-brace-format
+msgid "Source file not found in add-on: {file}. Skipping."
+msgstr "Ficheiro fonte não encontrado no extra: {file}. Saltar."
+
+#. NEW: Track as core file
+#: installTasks.py:189
+#, python-brace-format
+msgid "File missing in target: {file}. Will be copied."
+msgstr "Ficheiro em falta no destino: {file}. Será copiado."
+
+#: installTasks.py:192
+#, python-brace-format
+msgid "No files need to be copied to {path}"
+msgstr "Não é necessário copiar quaisquer ficheiros para {path}"
+
+#: installTasks.py:194
 #, python-brace-format
 msgid ""
-"The DeltaTalk files are already present in the target directory "
-"({target_path}). Installation will proceed without copying new files."
+"All DeltaTalk files, including the pronunciation dictionary ({dict}), are "
+"already present and up to date in the NVDA program directory ({path}).\n"
+"\n"
+"Installation will proceed without copying new files."
 msgstr ""
-"Os ficheiros do DeltaTalk já estão presentes no diretório de destino "
-"({target_path}). A instalação prosseguirá sem copiar novos ficheiros."
+"Todos os ficheiros do DeltaTalk, incluindo o dicionário de pronúncia "
+"({dict}), já estão presentes e atualizados no diretório do programa NVDA "
+"({path}).\n"
+"\n"
+"A instalação prosseguirá sem copiar novos ficheiros."
 
-#: installTasks.py:214
-msgid "Information"
-msgstr "Informação"
+#: installTasks.py:200
+msgid "Installation Information"
+msgstr "Informação de instalação"
 
-#: installTasks.py:228
+#: installTasks.py:208
+#, python-brace-format
+msgid "Elevation needed: {status}"
+msgstr "Elevação necessária: {status}"
+
+#: installTasks.py:218
 #, python-brace-format
 msgid ""
 "This add-on requires copying DeltaTalk files to the NVDA program directory "
-"({target_path}).\n"
+"({path}).\n"
 "\n"
-"Administrator permission (UAC) will be required to complete this operation.\n"
-"\n"
-"If the files are not copied, the DeltaTalk synthesizer may not work.\n"
-"\n"
-"Do you want to proceed with the installation?"
-msgstr ""
-"Este extra requer a cópia dos ficheiros do DeltaTalk para o diretório do "
-"programa NVDA ({target_path}).\n"
-"\n"
-"Será necessária a permissão do administrador (UAC) para concluir esta "
-"operação.\n"
-"\n"
-"Se os ficheiros não forem copiados, o sintetizador DeltaTalk pode não "
-"funcionar.\n"
-"\n"
-"Pretende prosseguir com a instalação?"
-
-#: installTasks.py:235
-#, python-brace-format
-msgid ""
-"This add-on requires copying DeltaTalk files to the NVDA program "
-"directory({target_path}).\n"
+"{uac_message}\n"
 "\n"
 "If the files are not copied, the DeltaTalk synthesizer may not work.\n"
 "\n"
 "Do you want to proceed with the installation?"
 msgstr ""
 "Este extra requer a cópia dos ficheiros do DeltaTalk para o diretório do "
-"programa NVDA ({target_path}).\n"
+"programa NVDA ({path}).\n"
+"\n"
+"{uac_message}\n"
 "\n"
 "Se os ficheiros não forem copiados, o sintetizador DeltaTalk pode não "
 "funcionar.\n"
 "\n"
 "Pretende prosseguir com a instalação?"
 
-#: installTasks.py:242
+#: installTasks.py:224 installTasks.py:237 installTasks.py:248
+msgid "Administrator permission (UAC) will be required."
+msgstr "Será necessária a permissão do administrador (UAC)."
+
+#: installTasks.py:226 installTasks.py:250
 msgid "Installation Confirmation"
 msgstr "Confirmação de instalação"
 
-#: installTasks.py:250
+#: installTasks.py:230
+#, python-brace-format
+msgid ""
+"This version includes an updated DeltaTalk pronunciation dictionary "
+"({dict}).\n"
+"\n"
+"The updated dictionary needs to be copied to the NVDA program directory "
+"({path}).\n"
+"\n"
+"{uac_message}\n"
+"\n"
+"Do you want to copy the updated dictionary now? If not, the synthesizer will "
+"work, but pronunciation corrections will not be applied."
+msgstr ""
+"Esta versão inclui um dicionário de pronúncia do DeltaTalk atualizado "
+"({dict}).\n"
+"\n"
+"O dicionário atualizado tem de ser copiado para o diretório do programa NVDA "
+"({path}).\n"
+"\n"
+"{uac_message}\n"
+"\n"
+"Pretende copiar o dicionário atualizado agora? Caso contrário, o "
+"sintetizador funcionará, mas as correções de pronúncia não serão aplicadas."
+
+#: installTasks.py:239
+msgid "Dictionary Update Confirmation"
+msgstr "Confirmação de Atualização do Dicionário"
+
+#: installTasks.py:243
+#, python-brace-format
+msgid ""
+"This add-on needs to copy/update DeltaTalk files to the NVDA program "
+"directory ({path}).\n"
+"\n"
+"{uac_message}\n"
+"\n"
+"Do you want to proceed?"
+msgstr ""
+"Este extra necessita de copiar/atualizar os ficheiros do DeltaTalk para o "
+"diretório do programa NVDA ({path}).\n"
+"\n"
+"{uac_message}\n"
+"\n"
+"Deseja continuar?"
+
+#: installTasks.py:260
+msgid "Installation canceled by user during file copy confirmation"
+msgstr ""
+"Instalação cancelada pelo utilizador durante a confirmação da cópia de "
+"ficheiros"
+
+#: installTasks.py:262
+#, python-brace-format
 msgid ""
 "The copy of the files has been canceled. The synthesizer will try to copy "
 "the files before it is loaded for the first time.\n"
 "\n"
-"If this fails, the synthesizer may not work correctly."
+"If this fails, the synthesizer may not work correctly. To avoid issues, you "
+"can reinstall the add-on and allow the file copy or manually copy the files "
+"from the add-on directory (synthDrivers/deltatalk) to the NVDA program "
+"folder ({path})."
 msgstr ""
 "A cópia dos ficheiros foi cancelada. O sintetizador tentará copiar os "
 "ficheiros antes de ser carregado pela primeira vez.\n"
 "\n"
-"Se isto falhar, o sintetizador pode não funcionar corretamente."
+"Se isto falhar, o sintetizador pode não funcionar corretamente. Para evitar "
+"problemas, pode reinstalar o extra e permitir a cópia de ficheiros ou copiar "
+"manualmente os ficheiros do diretório do extra (synthDrivers/deltatalk) para "
+"a pasta do programa NVDA ({path})."
 
-#: installTasks.py:252
-msgid "File copy canceled"
-msgstr "Cópia de ficheiros cancelada"
+#: installTasks.py:264
+msgid "File Copy Canceled"
+msgstr "Cópia de Ficheiros Cancelada"
 
-#: installTasks.py:271
+#: installTasks.py:274
+msgid "Attempting to copy files with elevated permissions"
+msgstr "Tentativa de copiar ficheiros com permissões elevadas"
+
+#: installTasks.py:277
+msgid "Copying files with normal permissions"
+msgstr "A copiar ficheiros com permissões normais"
+
+#: installTasks.py:281
+#, python-brace-format
+msgid "DeltaTalk files successfully copied/updated to {path}"
+msgstr ""
+"Os ficheiros do DeltaTalk foram copiados/atualizados com sucesso para {path}"
+
+#: installTasks.py:286
 #, python-brace-format
 msgid ""
 "DeltaTalk files successfully copied to:\n"
-"{target_path}\n"
+"{path}\n"
 "\n"
 "The DeltaTalk synthesizer is now ready to use.\n"
 "\n"
 "You can now select MicroPower DeltaTalk TTS as your synthesizer in NVDA "
-"settings."
+"settings.\n"
+"\n"
+"Note: These files will be automatically removed if you uninstall this add-on."
 msgstr ""
 "Os ficheiros do DeltaTalk foram copiados com sucesso para:\n"
-"{target_path}\n"
+"{path}\n"
 "\n"
-"O sintetizador DeltaTalk está agora pronto para ser utilizado.\n"
+"O sintetizador DeltaTalk está agora pronto a ser utilizado.\n"
 "\n"
 "Pode agora selecionar o MicroPower DeltaTalk TTS como o seu sintetizador nas "
-"configurações do NVDA."
+"configurações do NVDA.\n"
+"\n"
+"Nota: Estes ficheiros serão automaticamente removidos se o extra for "
+"desinstalado."
 
-#: installTasks.py:274
+#: installTasks.py:290
 msgid "Installation Completed"
 msgstr "Instalação concluída"
 
-#: installTasks.py:281
+#: installTasks.py:296
+#, python-brace-format
 msgid ""
-"Failed to copy DeltaTalk files to the target directory.\n"
+"The DeltaTalk pronunciation dictionary ({dict}) was successfully updated "
+"in:\n"
+"{path}\n"
 "\n"
-"The synthesizer will try to copy the files before it is loaded for the first "
-"time. If this fails, you may need to:\n"
+"The synthesizer is now ready to use with the latest pronunciation "
+"corrections."
+msgstr ""
+"O dicionário de pronúncia do DeltaTalk ({dict}) foi atualizado com sucesso "
+"em:\n"
+"{path}\n"
+"\n"
+"O sintetizador está agora pronto a ser utilizado com as últimas correções de "
+"pronúncia."
+
+#: installTasks.py:302
+msgid "Dictionary Update Completed"
+msgstr "Atualização do Dicionário Concluída"
+
+#: installTasks.py:307
+msgid "Failed to copy/update DeltaTalk files."
+msgstr "Falha ao copiar/atualizar os ficheiros do DeltaTalk."
+
+#: installTasks.py:309
+#, python-brace-format
+msgid ""
+"Failed to copy or update some DeltaTalk files to:\n"
+"{path}\n"
+"\n"
+"The synthesizer will try to copy these files before it is loaded for the "
+"first time. If this fails, you may need to:\n"
 "1. Run NVDA as administrator and reinstall the add-on, or\n"
-"2. Manually copy the files from the add-on directory to the NVDA program "
-"folder.\n"
+"2. Manually copy the files from the add-on directory (synthDrivers/"
+"deltatalk) to the NVDA program folder.\n"
 "\n"
 "Please check the NVDA log for more details."
 msgstr ""
-"Falha ao copiar os ficheiros do DeltaTalk para o diretório de destino.\n"
+"Falha ao copiar ou atualizar alguns ficheiros do DeltaTalk para:\n"
+"{path}\n"
 "\n"
-"O sintetizador tentará copiar os ficheiros antes de ser carregado pela "
+"O sintetizador tentará copiar estes ficheiros antes de ser carregado pela "
 "primeira vez. Se isto falhar, poderá ser necessário:\n"
 "1. Executar o NVDA como administrador e reinstalar o extra, ou\n"
-"2. Copiar manualmente os ficheiros do diretório do extra para a pasta do "
-"programa NVDA.\n"
+"2. Copiar manualmente os ficheiros do diretório do extra (synthDrivers/"
+"deltatalk) para a pasta do programa NVDA.\n"
 "\n"
-"Abra o visualizador de registo do NVDA para obter mais detalhes."
+"Por favor, verifique o log do NVDA para obter mais detalhes."
 
-#: installTasks.py:295
+#: installTasks.py:314
+msgid "Installation Warning"
+msgstr "Aviso de instalação"
+
+#: installTasks.py:320
+#, python-brace-format
+msgid "Error during DeltaTalk add-on installation: {error}"
+msgstr "Erro durante a instalação do extra DeltaTalk: {error}"
+
+#: installTasks.py:322
 #, python-brace-format
 msgid ""
 "Error during installation: {error}\n"
@@ -456,4 +953,133 @@ msgid ""
 msgstr ""
 "Erro durante a instalação: {error}\n"
 "\n"
-"Abra o visualizador de registo do NVDA para obter mais detalhes."
+"Por favor, verifique o log do NVDA para obter mais detalhes."
+
+#: installTasks.py:355
+#, python-brace-format
+msgid "Executing removal batch file with elevation: {path}"
+msgstr "Execução do ficheiro batch de remoção com elevação: {path}"
+
+#. Since we can't wait during uninstall, assume success if no immediate error
+#: installTasks.py:359
+msgid "Removal batch file executed"
+msgstr "Ficheiro batch de remoção executado"
+
+#: installTasks.py:362
+#, python-brace-format
+msgid "Failed to execute elevated removal batch: {error}"
+msgstr "Falha na execução elevada do ficheiro batch de remoção: {error}"
+
+#: installTasks.py:380
+#, python-brace-format
+msgid "Failed to schedule batch file cleanup: {error}"
+msgstr "Falha ao agendar a limpeza do ficheiro batch: {error}"
+
+#: installTasks.py:382
+#, python-brace-format
+msgid "Error creating/executing removal batch file: {error}"
+msgstr "Erro ao criar/executar o ficheiro batch de remoção: {error}"
+
+#: installTasks.py:395 installTasks.py:420
+#, python-brace-format
+msgid "Removed file: {file}"
+msgstr "Ficheiro removido: {file}"
+
+#: installTasks.py:397
+#, python-brace-format
+msgid "Successfully removed {count} files with admin privileges"
+msgstr ""
+"{count} ficheiros foram removidos com sucesso com privilégios de "
+"administrador"
+
+#: installTasks.py:400
+#, python-brace-format
+msgid "Error during elevated removal operation: {error}"
+msgstr "Erro durante a operação de remoção elevada: {error}"
+
+#: installTasks.py:423
+#, python-brace-format
+msgid "Failed to remove file {file}: {error}"
+msgstr "Falha ao remover o ficheiro {file}: {error}"
+
+#: installTasks.py:427
+#, python-brace-format
+msgid "Error during normal removal operation: {error}"
+msgstr "Erro durante a operação normal de remoção: {error}"
+
+#: installTasks.py:449
+msgid "DeltaTalk uninstallation started"
+msgstr "Desinstalação do DeltaTalk iniciada"
+
+#: installTasks.py:468
+#, python-brace-format
+msgid "No DeltaTalk files found to remove from {path}"
+msgstr "Não foram encontrados ficheiros do DeltaTalk para remover de {path}"
+
+#: installTasks.py:471
+#, python-brace-format
+msgid "Found {count} DeltaTalk files to remove: {files}"
+msgstr ""
+"Foram encontrados {count} ficheiros do DeltaTalk a serem removidos: {files}"
+
+#: installTasks.py:478
+#, python-brace-format
+msgid "Elevation needed for removal: {status}"
+msgstr "Elevação necessária para a remoção: {status}"
+
+#: installTasks.py:482
+msgid "Attempting to remove files with elevated permissions"
+msgstr "Tentativa de remover ficheiros com permissões elevadas"
+
+#: installTasks.py:486
+#, python-brace-format
+msgid "DeltaTalk files successfully removed with elevation from {path}"
+msgstr ""
+"Ficheiros do DeltaTalk removidos com sucesso com elevação a partir de {path}"
+
+#: installTasks.py:488
+msgid "Failed to remove files with elevation, trying normal method as fallback"
+msgstr ""
+"Falha ao remover ficheiros com elevação, a tentar o método normal como "
+"alternativa"
+
+#: installTasks.py:492
+#, python-brace-format
+msgid "Some files could not be removed without elevation: {files}"
+msgstr "Alguns ficheiros não puderam ser removidos sem elevação: {files}"
+
+#: installTasks.py:495
+#, python-brace-format
+msgid "You may need to manually remove these files from {path}"
+msgstr "Poderá ser necessário remover manualmente estes ficheiros de {path}"
+
+#. Normal removal
+#: installTasks.py:498
+msgid "Removing files with normal permissions"
+msgstr "Remoção de ficheiros com permissões normais"
+
+#: installTasks.py:502
+#, python-brace-format
+msgid "Failed to remove some files: {files}"
+msgstr "Falha ao remover alguns ficheiros: {files}"
+
+#: installTasks.py:508
+#, python-brace-format
+msgid "DeltaTalk uninstallation completed. Removed {count} files from {path}"
+msgstr ""
+"Desinstalação do DeltaTalk concluída. Foram removidos {count} ficheiros de "
+"{path}"
+
+#: installTasks.py:513
+#, python-brace-format
+msgid ""
+"No DeltaTalk files were removed. Check permissions or remove manually from "
+"{path}"
+msgstr ""
+"Não foram removidos quaisquer ficheiros do DeltaTalk. Verifique as "
+"permissões ou remova manualmente de {path}"
+
+#: installTasks.py:518
+#, python-brace-format
+msgid "Error during DeltaTalk add-on uninstallation: {error}"
+msgstr "Erro durante a desinstalação do extra DeltaTalk: {error}"
