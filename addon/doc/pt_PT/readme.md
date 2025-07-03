@@ -10,11 +10,11 @@ Este extra é um protótipo ainda em fase inicial, que implementa a compatibilid
 
 ## Características
 
-* Suporta as configurações de voz, velocidade, entoação e volume.
-* Suporta a alteração da percentagem da entoação para letras maiúsculas
-* É muito leve e responsivo
-* Tem um melhor controlo das características de voz, tais como velocidade e entoação, em comparação com a versão Sapi 4.
-* A leitura é mais precisa, sem falhas, lentidão ou interrupções.
+- Suporta as configurações de voz, velocidade, entoação e volume.
+- Suporta a alteração da percentagem da entoação para letras maiúsculas
+- É muito leve e responsivo
+- Tem um melhor controlo das características de voz, tais como velocidade e entoação, em comparação com a versão Sapi 4.
+- A leitura é mais precisa, sem falhas, lentidão ou interrupções.
 
 ## Instalação e utilização
 
@@ -54,22 +54,22 @@ Consulte a secção "Histórico de alterações" abaixo para saber como pode ati
 
 ## Problemas conhecidos
 
-* O sintetizador está limitado a 3 instâncias de cada vez. Esta limitação é imposta pela DLL do DeltaTalk e não pode ser contornada, ao menos por agora.
+- O sintetizador está limitado a 3 instâncias de cada vez. Esta limitação é imposta pela DLL do DeltaTalk e não pode ser contornada, ao menos por agora.
 
-  * Se utilizar o NVDA com um perfil de configuração com vozes diferentes, após a terceira alteração, o sintetizador bloqueará e não será carregado até que o NVDA seja reiniciado.
-  * Da mesma forma, se mudar manualmente para outro sintetizador e depois voltar para o DeltaTalk, este bloqueará após a terceira mudança até que o NVDA seja reiniciado.
+    - Se utilizar o NVDA com um perfil de configuração com vozes diferentes, após a terceira alteração, o sintetizador bloqueará e não será carregado até que o NVDA seja reiniciado.
+    - Da mesma forma, se mudar manualmente para outro sintetizador e depois voltar para o DeltaTalk, este bloqueará após a terceira mudança até que o NVDA seja reiniciado.
 
-* Durante a leitura contínua, o cursor do sistema não segue o sintetizador. Em vez disso, vai diretamente para o fim do texto.
-* Em alguns casos, o sintetizador pode bloquear completamente e permanecer sem voz até que o NVDA seja reiniciado.
+- Durante a leitura contínua, o cursor do sistema não segue o sintetizador. Em vez disso, vai diretamente para o fim do texto.
+- Em alguns casos, o sintetizador pode bloquear completamente e permanecer sem voz até que o NVDA seja reiniciado.
 
 ## Desenvolvimento futuro
 
 Este extra é um protótipo inicial, mas já está perfeitamente funcional. As versões futuras poderão incluir:
 
-* Funcionamento independente, sem necessidade de copiar os ficheiros de voz DeltaTalk para a pasta do programa NVDA
-* Interface de configuração dedicada no NVDA, com várias opções para personalizar a leitura do sintetizador
-* Instâncias de sintetizador ilimitadas, permitindo-lhe utilizar diferentes perfis de voz e alterar livremente o sintetizador
-* Integração da funcionalidade do extra "Informação Pausada", proporcionando uma leitura mais detalhada e pausada das informações dos controlos e estados quando o foco mudar.
+- Funcionamento independente, sem necessidade de copiar os ficheiros de voz DeltaTalk para a pasta do programa NVDA
+- Interface de configuração dedicada no NVDA, com várias opções para personalizar a leitura do sintetizador
+- Instâncias de sintetizador ilimitadas, permitindo-lhe utilizar diferentes perfis de voz e alterar livremente o sintetizador
+- Integração da funcionalidade do extra "Informação Pausada", proporcionando uma leitura mais detalhada e pausada das informações dos controlos e estados quando o foco mudar.
 
 ## Agradecimentos
 
@@ -83,32 +83,32 @@ Da mesma forma, os autores agradecem a todos os que experimentarem este extra a 
 
 ### Versão 0.3
 
-* Foi implementada uma lógica que verifica o dicionário de pronúncia interno do sintetizador (Brport.lng) e o copia automaticamente para a pasta do programa NVDA se forem detetadas alterações ao ficheiro original incluído no pacote do extra.
-* Foi incluído um dicionário de símbolos integrado para o DeltaTalk, permitindo-lhe interpretar os sinais de pontuação à sua maneira.
-* O extra agora utiliza "log" (importado do "logHandler") em vez de "logging", para uma melhor integração com o NVDA.
-* Foi incluído suporte experimental para reprodução de áudio utilizando o sistema "nvwave", com geração de áudio em blocos múltiplos e reprodução assíncrona.
+- Foi implementada uma lógica que verifica o dicionário de pronúncia interno do sintetizador (Brport.lng) e o copia automaticamente para a pasta do programa NVDA se forem detetadas alterações ao ficheiro original incluído no pacote do extra.
+- Foi incluído um dicionário de símbolos integrado para o DeltaTalk, permitindo-lhe interpretar os sinais de pontuação à sua maneira.
+- O extra agora utiliza "log" (importado do "logHandler") em vez de "logging", para uma melhor integração com o NVDA.
+- Foi incluído suporte experimental para reprodução de áudio utilizando o sistema "nvwave", com geração de áudio em blocos múltiplos e reprodução assíncrona.
 
-  * Isto ativa o suporte inicial para dispositivos de áudio secundários e o modo de diminuição do volume (Shift+NVDA+D).
-  * Esta funcionalidade ainda está desativada por predefinição e pode ser ativada para testes alterando a linha "self.\_use\_nvwave = False" para "True" no código do extra.
+    - Isto ativa o suporte inicial para dispositivos de áudio secundários e o modo de diminuição do volume (Shift+NVDA+D).
+    - Esta funcionalidade ainda está desativada por predefinição e pode ser ativada para testes alterando a linha "self.\_use\_nvwave = False" para "True" no código do extra.
 
-* Foram implementadas rotinas para remover os ficheiros de dados do DeltaTalk da pasta do programa NVDA se o extra for desinstalado. Note que podem ser necessários privilégios de administrador.
+- Foram implementadas rotinas para remover os ficheiros de dados do DeltaTalk da pasta do programa NVDA se o extra for desinstalado. Note que podem ser necessários privilégios de administrador.
 
 ### Versão 0.2
 
-* Esta é a primeira versão pública, com algumas correções de erros importantes.
-* As rotinas que copiam os ficheiros de dados do DeltaTalk para a pasta do programa NVDA foram corrigidas de modo a que o acesso administrativo só seja solicitado quando necessário. Isto elimina a necessidade de executar o NVDA como administrador ao instalar o extra.
-* O ficheiro "installTasks.py" suporta agora a internacionalização para manter a consistência com o código principal do sintetizador.
-* Foram adicionadas mais mensagens de log ao código principal do sintetizador para facilitar a depuração e a identificação de possíveis problemas.
-* A documentação para o extra (que anteriormente era apenas um rascunho inicial) foi reescrita e atualizada.
-* Os códigos antigos foram retirados do extra porque não funcionavam e eram obsoletos.
-* As traduções para português do Brasil e português de Portugal foram adicionadas para as mensagens do extra.
+- Esta é a primeira versão pública, com algumas correções de erros importantes.
+- As rotinas que copiam os ficheiros de dados do DeltaTalk para a pasta do programa NVDA foram corrigidas de modo a que o acesso administrativo só seja solicitado quando necessário. Isto elimina a necessidade de executar o NVDA como administrador ao instalar o extra.
+- O ficheiro "installTasks.py" suporta agora a internacionalização para manter a consistência com o código principal do sintetizador.
+- Foram adicionadas mais mensagens de log ao código principal do sintetizador para facilitar a depuração e a identificação de possíveis problemas.
+- A documentação para o extra (que anteriormente era apenas um rascunho inicial) foi reescrita e atualizada.
+- Os códigos antigos foram retirados do extra porque não funcionavam e eram obsoletos.
+- As traduções para português do Brasil e português de Portugal foram adicionadas para as mensagens do extra.
 
 ### Versão 0.1
 
-* Primeira versão de teste privada, com várias correções de erros que impediam o funcionamento do sintetizador.
-* Foi criada uma rotina que copia os ficheiros de dados do DeltaTalk para a pasta do programa NVDA durante a instalação do extra, o que elimina a necessidade de manter instalada a versão Sapi 4.
+- Primeira versão de teste privada, com várias correções de erros que impediam o funcionamento do sintetizador.
+- Foi criada uma rotina que copia os ficheiros de dados do DeltaTalk para a pasta do programa NVDA durante a instalação do extra, o que elimina a necessidade de manter instalada a versão Sapi 4.
 
-  * Foi também adicionada uma lógica que verifica a presença destes ficheiros na pasta do programa NVDA antes de carregar o sintetizador, e copia-os novamente se estiverem em falta.
-  * Note que, para que isto funcione, o NVDA deve ser executado como administrador.
+    - Foi também adicionada uma lógica que verifica a presença destes ficheiros na pasta do programa NVDA antes de carregar o sintetizador, e copia-os novamente se estiverem em falta.
+    - Note que, para que isto funcione, o NVDA deve ser executado como administrador.
 
-* O suporte inicial para internacionalização foi adicionado ao código principal do sintetizador.
+- O suporte inicial para internacionalização foi adicionado ao código principal do sintetizador.
