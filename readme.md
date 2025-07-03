@@ -26,7 +26,7 @@ If this is not possible, or if you choose not to copy the files during installat
 
 If the copy fails, the synthesizer will not work correctly.
 
-Note that these files will be automatically removed if the extra is uninstalled.
+Note that these files will be automatically removed if the add-on is uninstalled.
 
 After installation, go to NVDA's speech settings (NVDA+Ctrl+V), press the "Change" button, and select the MicroPower DeltaTalk TTS synthesizer.
 
@@ -89,7 +89,8 @@ Likewise, the authors would like to thank everyone who tries this add-on from no
 * Experimental support has been included for audio playback using the "nvwave" system, with audio generation in multiple blocks and asynchronous playback.
 
   * This activates initial support for secondary audio devices and audio ducking mode (Shift+NVDA+D).
-  * This functionality is still disabled by default and can be enabled for testing by changing the line "self._use_nvwave = False" to "True" in the code of the add-on.
+  * This functionality is still disabled by default and can be enabled for testing by changing the line "self.\_use\_nvwave = False" to "True" in the code of the add-on.
+
 * Routines have been implemented to remove the DeltaTalk data files from the NVDA program folder if the add-on is uninstalled. Note that administrator privileges may be required.
 
 ### Version 0.2
