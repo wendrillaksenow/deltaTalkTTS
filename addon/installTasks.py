@@ -193,10 +193,10 @@ def onInstall():
 			gui.messageBox(
 				_("All DeltaTalk files, including the pronunciation dictionary ({dict}), are already present and up to date in the NVDA program directory ({path}).\n\n"
 				  "Installation will proceed without copying new files."
-			).format(
-				path=target_path,
-				dict=dictionary_file
-				)
+				).format(
+					path=target_path,
+					dict=dictionary_file
+				),
 				_("Installation Information"),
 				wx.OK | wx.ICON_INFORMATION,
 				gui.mainFrame
