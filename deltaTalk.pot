@@ -3,33 +3,33 @@
 # This file is distributed under the same license as the 'deltaTalk' package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: 'deltaTalk' '0.4'\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
 "POT-Creation-Date: 2025-08-13 20:14-0300\n"
-"PO-Revision-Date: 2025-08-13 20:34-0300\n"
-"Last-Translator: \n"
-"Language-Team: Wendrill Aksenow Brandão <wendrillaksenow@gmail.com>\n"
-"Language: pt_BR\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4\n"
 
 #. Translators: Name of the section in "Input gestures" dialog.
 #: addon\globalPlugins\deltaTalkSettings.py:40
 #: addon\globalPlugins\virtualVision.py:392
 msgid "DeltaTalk"
-msgstr "DeltaTalk"
+msgstr ""
 
 #: addon\globalPlugins\deltaTalkSettings.py:45
 msgid "&Use NVWave for audio playback"
-msgstr "&Usar NVWave para reprodução de áudio"
+msgstr ""
 
 #: addon\globalPlugins\deltaTalkSettings.py:49
 msgid "&Virtual Vision Mode..."
-msgstr "& Modo Virtual Vision..."
+msgstr ""
 
 #: addon\globalPlugins\deltaTalkSettings.py:55
 msgid ""
@@ -41,330 +41,321 @@ msgid ""
 "\n"
 "Are you shure you want to enable it?"
 msgstr ""
-"A reprodução de áudio com o NVWave é um recurso experimental e pode causar "
-"problemas.\n"
-"\n"
-"Você deve usá-lo apenas para fins de teste e se souber exatamente o que está "
-"fazendo.\n"
-"\n"
-"Tem certeza de que deseja ativá-lo?"
 
 #: addon\globalPlugins\deltaTalkSettings.py:58
 msgid "Confirmation"
-msgstr "Confirmação"
+msgstr ""
 
 #: addon\globalPlugins\deltaTalkSettings.py:64
 msgid "NVWave activation cancelled by user"
-msgstr "Ativação do NVWave cancelada pelo usuário"
+msgstr ""
 
 #: addon\globalPlugins\deltaTalkSettings.py:66
 msgid "NVWave has been activated"
-msgstr "O NVWave foi ativado"
+msgstr ""
 
 #: addon\globalPlugins\deltaTalkSettings.py:86
 msgid ""
 "Changing the NVWave configuration requires DeltaTalk to be reloaded to take "
 "effect."
 msgstr ""
-"Alterar a configuração do NVWave requer que o DeltaTalk seja recarregado "
-"para que tenha efeito."
 
 #: addon\globalPlugins\deltaTalkSettings.py:87
 #: addon\globalPlugins\virtualVision.py:159
 msgid "Warning"
-msgstr "Aviso"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:30
 msgid "alert"
-msgstr "alerta"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:31
 msgid "button"
-msgstr "botão"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:32
 msgid "check box"
-msgstr "caixa de verificação"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:33
 msgid "check menu item"
-msgstr "item de menu com caixa de verificação"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:34
 msgid "combo box"
-msgstr "caixa combinada"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:35
 msgid "data grid"
-msgstr "grade de dados"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:36
 msgid "dialog"
-msgstr "diálogo"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:37
 msgid "document"
-msgstr "documento"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:38
 msgid "edit"
-msgstr "caixa de edição"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:39
 msgid "frame"
-msgstr "frame"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:40
 msgid "graphic"
-msgstr "gráfico"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:41
 msgid "grouping"
-msgstr "grupo"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:42
 msgid "heading"
-msgstr "cabeçalho"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:43
 msgid "hot key field"
-msgstr "campo de teclas de atalho"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:44
 msgid "icon"
-msgstr "ícone"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:45
 msgid "indicator"
-msgstr "indicador"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:46
 msgid "link"
-msgstr "link"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:47
 msgid "list"
-msgstr "lista"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:48
 msgid "list item"
-msgstr "item de lista"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:49
 msgid "menu bar"
-msgstr "barra de menus"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:50
 msgid "menu button"
-msgstr "botão de menu"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:51
 msgid "menu item"
-msgstr "item de menu"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:52
 msgid "menu"
-msgstr "menu"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:53
 msgid "progress bar"
-msgstr "barra de progresso"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:54
 msgid "property page"
-msgstr "página de propriedades"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:55
 msgid "radio button"
-msgstr "caixa de opção"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:56
 msgid "radio menu item"
-msgstr "item de menu com caixa de opção"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:57
 msgid "scroll bar"
-msgstr "barra de rolagem"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:58
 msgid "separator"
-msgstr "separador"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:59
 msgid "slider"
-msgstr "marcador de valor"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:60
 msgid "spin button"
-msgstr "botão de rotação"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:61
 msgid "split button"
-msgstr "botão de divisão"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:62
 msgid "text"
-msgstr "texto estático"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:63
 msgid "status bar"
-msgstr "barra de status"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:64
 msgid "switch"
-msgstr "alternador"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:65
 msgid "tab"
-msgstr "guia de página"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:66
 msgid "tab control"
-msgstr "controle de guias"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:67
 msgid "table"
-msgstr "tabela"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:68
 msgid "column header"
-msgstr "cabeçalho de coluna"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:69
 msgid "terminal"
-msgstr "terminal"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:70
 msgid "toggle button"
-msgstr "botão de alternância"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:71
 msgid "tool bar"
-msgstr "barra de ferramentas"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:72
 msgid "tool tip"
-msgstr "dica de ferramenta"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:73
 msgid "tree view"
-msgstr "lista hierárquica"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:74
 msgid "tree view item"
-msgstr "item da lista hierárquica"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:75
 msgid "window"
-msgstr "janela"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:83
 msgid "has auto complete"
-msgstr "tem preenchimento automático"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:84
 msgid "busy"
-msgstr "ocupado"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:85
 msgid "checked"
-msgstr "marcado"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:86
 msgid "clickable"
-msgstr "clicável"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:87
 msgid "collapsed"
-msgstr "recolhido"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:88
 msgid "expanded"
-msgstr "expandido"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:89
 msgid "half checked"
-msgstr "meio marcado"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:90
 msgid "half pressed"
-msgstr "meio pressionado"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:91
 msgid "has long description"
-msgstr "tem uma descrição longa"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:92
 msgid "subMenu"
-msgstr "contém submenus"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:93
 msgid "same page"
-msgstr "para a mesma página"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:94
 msgid "invalid entry"
-msgstr "entrada inválida"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:95
 msgid "multi line"
-msgstr "multilinha"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:96
 msgid "on"
-msgstr "ativado"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:97
 msgid "pressed"
-msgstr "pressionado"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:98
 msgid "protected"
-msgstr "protegida"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:99
 msgid "read only"
-msgstr "somente leitura"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:100
 msgid "required"
-msgstr "obrigatório"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:101
 msgid "sorted"
-msgstr "classificado"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:102
 msgid "sorted ascending"
-msgstr "classificado em ordem crescente"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:103
 msgid "sorted descending"
-msgstr "classificado em ordem decrescente"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:104
 msgid "unavailable"
-msgstr "indisponível"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:105
 msgid "visited"
-msgstr "visitado"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:111
 msgid "not checked"
-msgstr "desmarcado"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:112
 msgid "off"
-msgstr "desativado"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:113
 msgid "not pressed"
-msgstr "não pressionado"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:114
 msgid "not selected"
-msgstr "não selecionado"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:157
 msgid ""
@@ -373,23 +364,17 @@ msgid ""
 "\n"
 "Switch to DeltaTalk to change the Virtual Vision mode settings."
 msgstr ""
-"O modo Virtual Vision é exclusivo do DeltaTalk e não está disponível para "
-"este sintetizador.\n"
-"\n"
-"Mude para o DeltaTalk para alterar as configurações do modo Virtual Vision."
 
 #: addon\globalPlugins\virtualVision.py:163
 msgid ""
 "Attempted to open Virtual Vision mode settings without DeltaTalk synthesizer "
 "active"
 msgstr ""
-"Tentativa de abrir as configurações do modo Virtual Vision sem o "
-"sintetizador DeltaTalk ativo"
 
 #. Translators: The name of the dialog in the DeltaTalk settings panel.
 #: addon\globalPlugins\virtualVision.py:167
 msgid "Virtual Vision Mode Settings"
-msgstr "Configurações do Modo Virtual Vision"
+msgstr ""
 
 #. Translators: The description of the Virtual Vision Mode.
 #: addon\globalPlugins\virtualVision.py:172
@@ -398,64 +383,58 @@ msgid ""
 "inserts pauses when reading control information, providing a more detailed "
 "and paused reading of control and state information when the focus changes."
 msgstr ""
-"O modo Virtual Vision (originalmente 'Informação Pausada') é uma extensão "
-"que insere pausas ao ler informações de controle, proporcionando uma leitura "
-"mais detalhada e pausada das informações dos controles e estados quando o "
-"foco muda."
 
 #. Translators: The label for a checkbox in the settings dialog.
 #: addon\globalPlugins\virtualVision.py:175
 msgid "&Enable Virtual Vision mode"
-msgstr "&Ativar o modo Virtual Vision"
+msgstr ""
 
 #. Translators: The label for a checkbox in the settings dialog.
 #: addon\globalPlugins\virtualVision.py:180
 msgid "&Allow custom translations for the names of control types and states"
 msgstr ""
-"&Permitir traduções personalizadas para os nomes dos tipos de controle e "
-"estados"
 
 #. Translators: The label for a radio button group in the settings dialog.
 #: addon\globalPlugins\virtualVision.py:184
 msgid "Message Extension"
-msgstr "Extensão de mensagens"
+msgstr ""
 
 #. Translators: The label for a radio button option in the settings dialog.
 #: addon\globalPlugins\virtualVision.py:189
 msgid "&Short"
-msgstr "&Curtas"
+msgstr ""
 
 #. Translators: The label for a radio button option in the settings dialog.
 #: addon\globalPlugins\virtualVision.py:193
 msgid "&Medium"
-msgstr "&Médias"
+msgstr ""
 
 #. Translators: The label for a radio button option in the settings dialog.
 #: addon\globalPlugins\virtualVision.py:197
 msgid "&Long"
-msgstr "&Longas"
+msgstr ""
 
 #. Translators: The label for a radio button option in the settings dialog.
 #: addon\globalPlugins\virtualVision.py:201
 msgid "&Custom"
-msgstr "&Personalizado"
+msgstr ""
 
 #. Translators: The label for a button in the settings dialog.
 #: addon\globalPlugins\virtualVision.py:205
 msgid "Configure..."
-msgstr "Configurar..."
+msgstr ""
 
 #. Translators: A log message indicating an error when saving the Virtual Vision Mode settings.
 #: addon\globalPlugins\virtualVision.py:259
 #: addon\globalPlugins\virtualVision.py:354
 #, python-brace-format
 msgid "Error saving configuration for Virtual Vision mode: {error}"
-msgstr "Erro ao salvar a configuração para o modo Virtual Vision: {error}"
+msgstr ""
 
 #. Translators: The name of the custom level settings dialog.
 #: addon\globalPlugins\virtualVision.py:269
 msgid "Settings for the custom message extension level"
-msgstr "Configurações para o nível de extensão de mensagens personalizado"
+msgstr ""
 
 #. Translators: The instruction text for the custom level settings dialog.
 #: addon\globalPlugins\virtualVision.py:274
@@ -463,80 +442,71 @@ msgid ""
 "You can individually adjust all the information announced by the Virtual "
 "Vision mode"
 msgstr ""
-"Você pode ajustar individualmente todas as informações anunciadas pelo modo "
-"Virtual Vision"
 
 #. Translators: The label for a group of controls in the custom level settings dialog.
 #: addon\globalPlugins\virtualVision.py:277
 msgid "Types of control"
-msgstr "Tipos de controle"
+msgstr ""
 
 #. Translators: The label for a custom check list box in the custom level settings dialog.
 #: addon\globalPlugins\virtualVision.py:286
 msgid "Select the controls to be announced:"
-msgstr "Selecione os controles a serem anunciados:"
+msgstr ""
 
 #. Translators: The label for a group of controls in the custom level settings dialog.
 #: addon\globalPlugins\virtualVision.py:302
 msgid "Other additional messages"
-msgstr "Outras mensagens adicionais"
+msgstr ""
 
 #. Translators: The label for a checkbox in the custom level settings dialog.
 #: addon\globalPlugins\virtualVision.py:307
 msgid "Announce active windows"
-msgstr "Anunciar janelas ativas"
+msgstr ""
 
 #. Translators: The label for a checkbox in the custom level settings dialog.
 #: addon\globalPlugins\virtualVision.py:313
 msgid "Announce shortcut before object shortcut keys"
-msgstr "Anunciar atalho antes das teclas de atalho dos objetos"
+msgstr ""
 
 #. Translators: The label for a checkbox in the custom level settings dialog.
 #: addon\globalPlugins\virtualVision.py:319
 msgid "Announce value before slider and scrollbar values"
 msgstr ""
-"Anunciar \"valor\" antes dos valores do controle deslizante e da barra de "
-"rolagem"
 
 #: addon\globalPlugins\virtualVision.py:379
 msgid "Virtual Vision Mode has been disabled because DeltaTalk is not active."
 msgstr ""
-"O modo Virtual Vision foi desativado porque o DeltaTalk não está ativo."
 
 #: addon\globalPlugins\virtualVision.py:381
 msgid "Virtual Vision Mode has been enabled with DeltaTalk."
-msgstr "O modo Virtual Vision foi ativado com o DeltaTalk."
+msgstr ""
 
 #. Translators: The description for the toggle script.
 #: addon\globalPlugins\virtualVision.py:390
 msgid ""
 "Toggles Virtual Vision mode on and off when DeltaTalk synthesizer is active"
 msgstr ""
-"Liga ou desliga o modo Virtual Vision quando o sintetizador DeltaTalk está "
-"ativo"
 
 #. Translators: Message announced when the user tries to execute the script without DeltaTalk being active.
 #: addon\globalPlugins\virtualVision.py:398
 msgid ""
 "Virtual Vision mode is only available when DeltaTalk synthesizer is active"
 msgstr ""
-"O modo Virtual Vision só está disponível quando o sintetizador DeltaTalk "
-"está ativo"
 
 #. Translators: Message announced when Virtual Vision mode is enabled or disabled.
 #: addon\globalPlugins\virtualVision.py:402
 msgid "Virtual Vision mode enabled"
-msgstr "Modo Virtual Vision ativado"
+msgstr ""
 
 #: addon\globalPlugins\virtualVision.py:402
 msgid "Virtual Vision mode disabled"
-msgstr "Modo Virtual Vision desativado"
+msgstr ""
 
 #. Translators: Announced when any window or dialog is activated
 #: addon\globalPlugins\virtualVision.py:426
 #, python-brace-format
 msgid "Window activated: {name}"
-msgstr "Janela ativada: {name}"
+msgstr ""
 
 #. Translators: Announced before a slider value when the Announce value before slider and scrollbar values is enabled
 #. Translators: Announced before a slider value when the message extension is medium or higher
@@ -544,7 +514,7 @@ msgstr "Janela ativada: {name}"
 #: addon\globalPlugins\virtualVision.py:478
 #, python-brace-format
 msgid "Value: {value}"
-msgstr "Valor: {value}"
+msgstr ""
 
 #. Translators: Announced before the shortcut key of an object when the Announce shortcut before object shortcut keys is enabled
 #. Translators: Announced before the shortcut key of an object when the message extension is medium or higher
@@ -552,198 +522,197 @@ msgstr "Valor: {value}"
 #: addon\globalPlugins\virtualVision.py:492
 #, python-brace-format
 msgid "Shortcut: {shortcut}"
-msgstr "Atalho: {shortcut}"
+msgstr ""
 
 #. translators: A message indicating an error in the log for the customSpeakObject function.
 #: addon\globalPlugins\virtualVision.py:536
 #, python-brace-format
 msgid "Error in customSpeakObject: {error}"
-msgstr "Erro em customSpeakObject: {error}"
+msgstr ""
 
 #. Translators: Used to announce the index number in lists and other objects
 #: addon\globalPlugins\virtualVision.py:591
 #, python-brace-format
 msgid "{index} of {total}"
-msgstr "{index} de {total}"
+msgstr ""
 
 #. Translators: Used to announce the level in the tree view and in other objects
 #: addon\globalPlugins\virtualVision.py:594
 #, python-brace-format
 msgid "Level {level}"
-msgstr "Nível {level}"
+msgstr ""
 
 #. Translators: Announced when the selected text is longer than 512 characters
 #: addon\globalPlugins\virtualVision.py:606
 #, python-brace-format
 msgid "{chars} characters selected"
-msgstr "{chars} caracteres selecionados"
+msgstr ""
 
 #. Translators: Announced before reading the selected text
 #: addon\globalPlugins\virtualVision.py:609
 #, python-brace-format
 msgid "Selected {text}"
-msgstr "Selecionado {text}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:28
 msgid "Operation completed successfully"
-msgstr "Operação concluída com sucesso"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:29
 msgid "The synthesizer is not initialized"
-msgstr "O sintetizador não foi inicializado"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:30
 msgid "The synthesizer is busy processing another task"
-msgstr "O sintetizador está ocupado processando outra tarefa"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:31
 msgid "Invalid command issued to the synthesizer"
-msgstr "Comando inválido enviado ao sintetizador"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:32
 msgid "Failed to initialize audio processing subsystem"
-msgstr "Falha ao inicializar o subsistema de processamento de áudio"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:33
 msgid "Failed to open the required file"
-msgstr "Falha ao abrir o arquivo necessário"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:34
 msgid "Failed to write to the specified file"
-msgstr "Falha ao gravar no arquivo especificado"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:35
 msgid "Failed to initialize the synthesizer engine"
-msgstr "Falha ao inicializar o motor de síntese"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:36
 msgid "Insufficient memory to process the request"
-msgstr "Memória insuficiente para processar a solicitação"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:37
 msgid "Audio device is already in use by another program"
-msgstr "O dispositivo de áudio já está em uso por outro programa"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:38
 msgid "Failed to open the audio device"
-msgstr "Falha ao abrir o dispositivo de áudio"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:39
 msgid "Failed to send audio buffer to the sound card"
-msgstr "Falha ao enviar o buffer de áudio para a placa de som"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:40
 msgid "Audio format not supported by the sound card"
-msgstr "Formato de áudio não suportado pela placa de som"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:41
 msgid "Audio output device is not available"
-msgstr "O dispositivo de saída de áudio não está disponível"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:42
 msgid "Error communicating with the sound card driver"
-msgstr "Erro na comunicação com o driver da placa de som"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:43
 msgid "Insufficient memory to store synthesized audio"
-msgstr "Memória insuficiente para armazenar áudio sintetizado"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:44
 msgid "The provided value is out of range"
-msgstr "O valor fornecido está fora do intervalo"
+msgstr ""
 
 #. TTS_PCM_FINISHED
 #: addon\synthDrivers\deltatalk.py:45 addon\synthDrivers\deltatalk.py:338
 msgid "PCM audio processing completed"
-msgstr "Processamento de áudio PCM concluído"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:46
 msgid "Internal signal processing error"
-msgstr "Erro de processamento de sinal interno"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:47
 msgid "DSP file not found"
-msgstr "Arquivo DSP não encontrado"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:48
 msgid "Prosody modeling file not found"
-msgstr "Arquivo de modelagem de prosódia não encontrado"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:49
 msgid ""
 "The number of simultaneous instances of the synthesizer has been extrapolated"
-msgstr "O número de instâncias simultâneas do sintetizador foi extrapolado"
+msgstr ""
 
 #. Add-on summary/title, usually the user visible name of the add-on
 #. Translators: Summary/title for this add-on
 #. to be shown on installation and add-on information found in add-on store
 #: addon\synthDrivers\deltatalk.py:98 buildVars.py:23
 msgid "MicroPower DeltaTalk TTS"
-msgstr "MicroPower DeltaTalk TTS"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:122
 #, python-brace-format
 msgid "Checking the path: {path}"
-msgstr "Verificando o caminho: {path}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:124
 msgid "Dtalk32.dll not found"
-msgstr "Dtalk32.dll não encontrado"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:128
 msgid "Dtalk32.dll loaded successfully"
-msgstr "Dtalk32.dll carregado com sucesso"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:131
 #, python-brace-format
 msgid "Failed to load DLL: {error}"
-msgstr "Falha ao carregar DLL: {error}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:155
 #, python-brace-format
 msgid "DLL not found in: {path}"
-msgstr "DLL não encontrada em: {path}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:156
 msgid "DeltaTalk DLL not found. Check the installation of the add-on."
 msgstr ""
-"DLL do DeltaTalk não encontrada. Verifique a instalação do complemento."
 
 #: addon\synthDrivers\deltatalk.py:160
 msgid "DLL loaded successfully"
-msgstr "DLL carregada com sucesso"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:162
 #, python-brace-format
 msgid "Error loading DeltaTalk DLL in {path}: {error}"
-msgstr "Erro ao carregar a DLL do DeltaTalk em {path}: {error}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:164
 #, python-brace-format
 msgid "Failed to load DLL Dtalk32.dll: {error}"
-msgstr "Falha ao carregar a DLL Dtalk32.dll: {error}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:167
 msgid "DeltaTalk synthesizer failed to initialize"
-msgstr "Falha ao inicializar o sintetizador DeltaTalk"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:173 addon\synthDrivers\deltatalk.py:210
 #, python-brace-format
 msgid "Error managing symbol dictionary: {error}"
-msgstr "Erro ao gerenciar o dicionário de símbolos: {error}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:182
 msgid "Attempt to initialize TTS without the DLL loaded."
-msgstr "Tentativa de inicializar o TTS sem a DLL carregada."
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:185
 msgid "Starting TTS initialization"
-msgstr "Iniciando inicialização do TTS"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:188 addon\synthDrivers\deltatalk.py:195
 #, python-brace-format
 msgid "Error initializing TTS: {error}"
-msgstr "Erro ao inicializar o TTS: {error}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:188 addon\synthDrivers\deltatalk.py:309
 #: addon\synthDrivers\deltatalk.py:342 addon\synthDrivers\deltatalk.py:394
@@ -751,20 +720,20 @@ msgstr "Erro ao inicializar o TTS: {error}"
 #: addon\synthDrivers\deltatalk.py:467 addon\synthDrivers\deltatalk.py:530
 #: addon\synthDrivers\deltatalk.py:611
 msgid "Unknown error"
-msgstr "Erro desconhecido"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:191
 #, python-brace-format
 msgid "DeltaTalk initialized. Instance: {instance}"
-msgstr "DeltaTalk inicializado. Instância: {instance}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:206
 msgid "DeltaTalk symbol dictionary automatically activated"
-msgstr "Dicionário de símbolos do Deltatalk ativado automaticamente"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:208
 msgid "DeltaTalk symbol dictionary already active"
-msgstr "O dicionário de símbolos do DeltaTalk já está ativo"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:229
 #, python-brace-format
@@ -772,60 +741,53 @@ msgid ""
 "nvwave configured: {rate}Hz, {channels} channels, {bits} bits, device: "
 "{device}"
 msgstr ""
-"nvwave configurado: {rate}Hz, {channels} canais, {bits} bits, dispositivo: "
-"{device}"
 
 #: addon\synthDrivers\deltatalk.py:232
 #, python-brace-format
 msgid "Error configuring nvwave: {error}"
-msgstr "Erro ao configurar nvwave: {error}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:242
 msgid "Audio thread started"
-msgstr "Thread de áudio iniciada"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:252
 #, python-brace-format
 msgid "Processing text in audio worker: {text}, index: {index}"
 msgstr ""
-"Processando texto no gerenciador da fila de áudio: {text}, índice: {index}"
 
 #: addon\synthDrivers\deltatalk.py:265
 #, python-brace-format
 msgid "Error in audio worker: {error}"
-msgstr "Erro no gerenciador da fila de áudio: {error}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:270
 msgid ""
 "Falling back to direct playback due to missing instance or nvwave player"
 msgstr ""
-"Retornando à reprodução direta devido à falta de instância ou reprodutor "
-"nvwave"
 
 #: addon\synthDrivers\deltatalk.py:275
 msgid "Waiting for previous synthesis to complete"
-msgstr "Aguardando a conclusão da síntese anterior"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:280
 msgid "Synthesis timeout, falling back to direct playback"
-msgstr "Tempo de síntese esgotado, voltando para a reprodução direta"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:286
 #, python-brace-format
 msgid "Attempting to generate audio for text: {text}, index: {index}"
-msgstr "Tentando gerar áudio para texto: {text}, índice: {index}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:289
 #, python-brace-format
 msgid "Starting multi-block audio generation, text length: {length}"
 msgstr ""
-"Iniciando a geração de áudio multi-blocos, comprimento do texto: {length}"
 
 #: addon\synthDrivers\deltatalk.py:294
 #, python-brace-format
 msgid "Calling TTSENG_GenAudioBuffer with NEW_MULTI_BLOCK, buffer size: {size}"
 msgstr ""
-"Chamando TTSENG_GenAudioBuffer com NEW_MULTI_BLOCK, tamanho do buffer: {size}"
 
 #: addon\synthDrivers\deltatalk.py:304
 #, python-brace-format
@@ -833,219 +795,213 @@ msgid ""
 "TTSENG_GenAudioBuffer (NEW_MULTI_BLOCK) returned: {result}, bytes written: "
 "{bytes}"
 msgstr ""
-"TTSENG_GenAudioBuffer (NEW_MULTI_BLOCK) retornou: {result}, bytes escritos: "
-"{bytes}"
 
 #: addon\synthDrivers\deltatalk.py:308
 #, python-brace-format
 msgid "Error starting multi-block audio: {error} ({code})"
-msgstr "Erro ao iniciar áudio multi-blocos: {error} ({code})"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:317
 #, python-brace-format
 msgid "Feeding initial audio data to nvwave: {bytes} bytes"
-msgstr "Transmitindo os dados de áudio iniciais para nvwave: {bytes} bytes"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:324
 #, python-brace-format
 msgid "Calling TTSENG_GenAudioBuffer with NEXT_BLOCK, buffer size: {size}"
 msgstr ""
-"Chamando TTSENG_GenAudioBuffer com NEXT_BLOCK, tamanho do buffer: {size}"
 
 #: addon\synthDrivers\deltatalk.py:334
 #, python-brace-format
 msgid ""
 "TTSENG_GenAudioBuffer (NEXT_BLOCK) returned: {result}, bytes written: {bytes}"
 msgstr ""
-"TTSENG_GenAudioBuffer (NEXT_BLOCK) retornou: {result}, bytes escritos: "
-"{bytes}"
 
 #: addon\synthDrivers\deltatalk.py:341
 #, python-brace-format
 msgid "Error processing multi-block audio: {error} ({code})"
-msgstr "Erro ao processar áudio multi-blocos: {error} ({code})"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:348
 #, python-brace-format
 msgid "Feeding audio data to nvwave: {bytes} bytes"
-msgstr "Transmitindo dados de áudio para nvwave: {bytes} bytes"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:354
 #, python-brace-format
 msgid "Audio successfully fed to nvwave for text: {text}"
-msgstr "Áudio transmitido com sucesso ao nvwave para texto: {text}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:357
 #, python-brace-format
 msgid "Exception in audio generation: {error}"
-msgstr "Exceção na geração de áudio: {error}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:376
 msgid "Waiting for previous direct playback to complete"
-msgstr "Aguardando a reprodução direta anterior ser concluída"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:381
 msgid "Direct playback timeout, skipping"
-msgstr "Tempo de reprodução direta esgotado, ignorando"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:387
 #, python-brace-format
 msgid "Using direct playback for text: {text}"
-msgstr "Usando reprodução direta para o texto: {text}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:393
 #, python-brace-format
 msgid "Error when attaching text: {error}"
-msgstr "Erro ao anexar texto: {error}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:396
 #, python-brace-format
 msgid "Attached text: {text}"
-msgstr "Texto anexado: {text}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:398
 #, python-brace-format
 msgid "Error when speaking text: {error}"
-msgstr "Erro ao falar texto: {error}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:401
 #, python-brace-format
 msgid "Spoken text: {text}"
-msgstr "Texto falado: {text}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:403
 #, python-brace-format
 msgid "Error when processing text: {error}"
-msgstr "Erro ao processar texto: {error}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:414
 #, python-brace-format
 msgid "Text queued for nvwave: {text}, index: {index}"
-msgstr "Texto na fila para nvwave: {text}, índice: {index}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:416
 msgid "Audio queue full, using direct playback"
-msgstr "Fila de áudio cheia, usando reprodução direta"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:419
 msgid "Using direct playback due to nvwave not available"
-msgstr "Usando reprodução direta devido ao nvwave não estar disponível"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:424
 msgid "Speech attempt without initialized instance."
-msgstr "Tentativa de fala sem instância inicializada."
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:457
 #, python-brace-format
 msgid "Error when applying settings: {error} ({code})"
-msgstr "Erro ao aplicar configurações: {error} ({code})"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:460
 #, python-brace-format
 msgid "Settings applied: rate={rate}, volume={volume}, pitch={pitch}"
 msgstr ""
-"Configurações aplicadas: velocidade={rate}, volume={volume}, tom={pitch}"
 
 #: addon\synthDrivers\deltatalk.py:466
 #, python-brace-format
 msgid "Error when applying voice: {error} ({code})"
-msgstr "Erro ao aplicar voz: {error} ({code})"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:469
 #, python-brace-format
 msgid "Applied voice: {voice} (ID: {id})"
-msgstr "Voz aplicada: {voice} (ID: {id})"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:491
 #, python-brace-format
 msgid "Speed set to {rate} (converted from {original})"
-msgstr "Velocidade configurada para {rate} (convertido de {original})"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:503
 #, python-brace-format
 msgid "Pitch set to {pitch} (converted from {original})"
-msgstr "Tom configurado para {pitch} (convertido de {original})"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:515
 #, python-brace-format
 msgid "Volume set to {volume} (converted from {original})"
-msgstr "Volume configurado para {volume} (convertido de {original})"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:529
 #, python-brace-format
 msgid "Error configuring voice: {error} ({code})"
-msgstr "Erro ao configurar voz: {error} ({code})"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:532
 #, python-brace-format
 msgid "Voice changed to {voice}"
-msgstr "Voz alterada para {voice}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:544
 #, python-brace-format
 msgid "Reconfiguring nvwave for new sample rate: {rate}Hz"
-msgstr "Reconfigurando o nvwave para nova taxa de amostragem: {rate}Hz"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:556
 msgid "Text paused"
-msgstr "Texto pausado"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:559
 msgid "Text resumed"
-msgstr "Texto retomado"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:563
 msgid "nvwave paused"
-msgstr "nvwave pausado"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:563
 msgid "nvwave resumed"
-msgstr "nvwave retomado"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:565
 #, python-brace-format
 msgid "Error pausing/resuming nvwave: {error}"
-msgstr "Erro ao pausar/retomar nvwave: {error}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:571
 msgid "Text stopped"
-msgstr "Texto parado"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:575
 msgid "nvwave stopped"
-msgstr "nvwave parado"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:577
 #, python-brace-format
 msgid "Error stopping nvwave: {error}"
-msgstr "Erro ao parar o nvwave: {error}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:597
 msgid "Audio thread did not terminate gracefully"
-msgstr "A thread de áudio não terminou de forma adequada"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:602
 msgid "nvwave player closed"
-msgstr "reprodutor nvwave fechado"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:604
 #, python-brace-format
 msgid "Error closing nvwave player: {error}"
-msgstr "Erro ao fechar o reprodutor nvwave: {error}"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:610
 #, python-brace-format
 msgid "Error when closing: {error} ({code})"
-msgstr "Erro ao fechar: {error} ({code})"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:613
 msgid "DeltaTalk synthesizer successfully closed"
-msgstr "Sintetizador DeltaTalk encerrado com sucesso"
+msgstr ""
 
 #: addon\synthDrivers\deltatalk.py:615
 #, python-brace-format
 msgid "Error closing the synthesizer: {error}"
-msgstr "Erro ao fechar o sintetizador: {error}"
+msgstr ""
 
 #. Add-on description
 #. Translators: Long description to be shown for this add-on on add-on information from add-on store
@@ -1055,13 +1011,10 @@ msgid ""
 "Portuguese language.\n"
 "This add-on implements NVDA compatibility with this synthesizer."
 msgstr ""
-"DeltaTalk é o primeiro sintetizador de voz de alta qualidade, disponível "
-"para a língua portuguesa.\n"
-"Este complemento implementa a compatibilidade do NVDA com este sintetizador."
 
 #: buildVars.py:101
 msgid "DeltaTalk Symbol Dictionary"
-msgstr "Dicionário de Símbolos do DeltaTalk"
+msgstr ""
 
 #. Translators: Message asking if the user wants to uninstall the previous version of the add-on
 #: installTasks.py:24
@@ -1073,29 +1026,23 @@ msgid ""
 "\n"
 "Do you want to remove the 'Pausing Information' add-on now?"
 msgstr ""
-"O complemento 'Informação Pausada' foi detectado. Este complemento foi "
-"integrado ao DeltaTalk como o plugin 'Modo Virtual Vision'.\n"
-"\n"
-"Para evitar conflitos, este complemento deve ser removido.\n"
-"\n"
-"Deseja remover o complemento 'Informação Pausada' agora?"
 
 #. Translators: Question title
 #: installTasks.py:29
 msgid "Add-on Conflict Detected"
-msgstr "Conflito de Complemento Detectado"
+msgstr ""
 
 #: installTasks.py:33
 #, python-brace-format
 msgid "The '{addonName}' add-on has been successfully removed."
-msgstr "O complemento '{addonName}' foi removido com sucesso."
+msgstr ""
 
 #: installTasks.py:35
 #, python-brace-format
 msgid "User canceled removal of the '{addonName}' add-on."
-msgstr "O usuário cancelou a remoção do complemento '{addonName}'."
+msgstr ""
 
 #: installTasks.py:36
 #, python-brace-format
 msgid "Installation canceled by the user due to conflict with '{addonName}'."
-msgstr "Instalação cancelada pelo usuário devido a conflito com '{addonName}'."
+msgstr ""

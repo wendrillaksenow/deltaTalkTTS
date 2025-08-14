@@ -5,25 +5,21 @@
 # This file is covered by the GNU General Public License.
 # See the file COPYING for more details.
 
-# Import the necessary modules
 import os
-import sys
 import ctypes
-import hashlib
-import tempfile
 import queue
 import threading
 import time
 import config
 import nvwave
+import wx
 from ctypes import *
 from synthDriverHandler import SynthDriver as SynthDriverBase
 from synthDriverHandler import synthDoneSpeaking, SynthDriver, synthIndexReached, VoiceInfo
 from logHandler import log
 from speech.commands import IndexCommand, PitchCommand, RateCommand, VolumeCommand, CharacterModeCommand
-import shutil
 import addonHandler
-from systemUtils import execElevated
+from globalPlugins import deltaTalkSettings
 
 addonHandler.initTranslation()
 
@@ -84,66 +80,17 @@ VOICE_MAP = {
 # Multiplier adjusted to convert values correctly
 DT_MULTIPLIER = 20 / 100  # 100 (NVDA) → 20 (DeltaTalk), mínimo 1
 
+# DeltaTalk configuration options
+confspec = {
+	"useNVWave": "boolean(default=False)",
+	"autoEnableSymbolDict": "boolean(default=True)"
+}
+
+config.conf.spec["deltaTalk"] = confspec
+
 def convert_nvda_to_dt(value):
 	"""Converts a value from the NVDA scale (0-100) to the DeltaTalk scale (1-20)."""
 	return max(1, min(20, int(value * DT_MULTIPLIER)))
-
-def test_write_permission(target_path):
-	"""Test if we have write permission to the target directory."""
-	test_file = os.path.join(target_path, "test_write_permission.tmp")
-	try:
-		with open(test_file, "w") as f:
-			f.write("test")
-		os.remove(test_file)
-		return True
-	except (OSError, IOError):
-		return False
-
-def copy_files_with_elevation(source_dir, target_dir, file_list):
-	"""
-	Copy specific files with elevated permissions using batch file approach.
-	Returns True if successful, False otherwise.
-	"""
-	if not file_list:
-		return True
-	
-	batch_content = "@echo off\n"
-	batch_content += f'echo Copying DeltaTalk files from "{source_dir}" to "{target_dir}"\n'
-	# Add copy commands for each file
-	try:
-		for filename in file_list:
-			source_file = os.path.join(source_dir, filename)
-			target_file = os.path.join(target_dir, filename)
-			if os.path.isfile(source_file):
-				# Use xcopy for better reliability
-				batch_content += f'xcopy /Y "{source_file}" "{target_file}*"\n'
-		
-		batch_content += "echo Copy operation completed\n"
-		
-		# Create temporary batch file
-		with tempfile.NamedTemporaryFile(delete=False, suffix=".bat", mode="w", encoding="utf-8") as batch_file:
-			batch_file.write(batch_content)
-			batch_path = batch_file.name
-		
-		try:
-			# Execute batch file with elevation
-			log.debug(_("Executing batch file with elevation: {path}").format(path=batch_path))
-			result = execElevated("cmd.exe", ["/c", batch_path], wait=True)
-			if result == 0:
-				log.info(_("Files copied successfully with elevated permissions"))
-				return True
-			else:
-				log.error(_("Batch file execution failed with code: {code}").format(code=result))
-				return False
-		finally:
-			# Clean up batch file
-			try:
-				os.remove(batch_path)
-			except Exception as e:
-				log.warning(_("Failed to delete temporary batch file: {error}").format(error=e))
-	except Exception as e:
-		log.error(_("Error creating/executing batch file: {error}").format(error=e))
-		return False
 
 class SynthDriver(SynthDriverBase):
 	"""DeltaTalk Synthesizer driver for NVDA."""
@@ -170,17 +117,15 @@ class SynthDriver(SynthDriverBase):
 
 	@classmethod
 	def check(cls):
-		nvda_root = os.path.dirname(os.path.abspath(sys.executable))
-		dll_path = os.path.join(nvda_root, "Dtalk32T.dll")
-		if not os.path.isfile(dll_path):
-			dll_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "deltatalk", "Dtalk32T.dll")
+		addon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "deltatalk")
+		dll_path = os.path.join(addon_path, "Dtalk32.dll")
 		log.debug(_("Checking the path: {path}").format(path=dll_path))
 		if not os.path.isfile(dll_path):
-			log.debug(_("Dtalk32T.dll not found"))
+			log.debug(_("Dtalk32.dll not found"))
 			return False
 		try:
 			ctypes.WinDLL(dll_path)
-			log.debug(_("Dtalk32T.dll loaded successfully"))
+			log.debug(_("Dtalk32.dll loaded successfully"))
 			return True
 		except Exception as e:
 			log.debug(_("Failed to load DLL: {error}").format(error=e))
@@ -195,107 +140,20 @@ class SynthDriver(SynthDriverBase):
 		self._lastIndex = 0
 		self.instancia = None
 		self._nvwave_player = None
-		self._use_nvwave = False  # Change to True to test audio playback via nvwave
+		self._use_nvwave = config.conf["deltaTalk"]["useNVWave"]  # Activate it in DeltaTalk Settings to test audio playback via nvwave
 		self._audio_thread = None
 		self._audio_queue = queue.Queue(maxsize=50)  # Reduced to avoid overloading
 		self._audio_thread_running = False
 		self._audio_lock = threading.Lock()
 		self._is_speaking = False  # Status to track if the DLL is busy
 
-
-		# NVDA and add-on path
-		nvda_root = os.path.dirname(os.path.abspath(sys.executable))
+		# Add-on path
 		addon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "deltatalk")
-		dll_path = os.path.join(nvda_root, "Dtalk32T.dll")
+		dll_path = os.path.join(addon_path, "Dtalk32.dll")
 
-		# Check and copy files if necessary
-		required_files = [
-			"br1.dsp", "br2.dsp", "br3.dsp", "brazil.alp", "brazil.des",
-			"brazil.f0", "brazil.rul", "brazilf0.HHS", "brport.lng",
-			"Dtalk32T.dll", "DTDsp32T.dll", "prosody.dll", "serial.dll"
-		]
-
-		# Check dictionary file (brport.lng) for updates
-		dictionary_file = "brport.lng"
-		dictionary_needs_update = False
-		missing_files = []
-
-		source_dict = os.path.join(addon_path, dictionary_file)
-		target_dict = os.path.join(nvda_root, dictionary_file)
-
-		if os.path.isfile(source_dict):
-			if not os.path.isfile(target_dict):
-				dictionary_needs_update = True
-				missing_files.append(dictionary_file)
-				log.info(_("Dictionary file {file} missing in NVDA. Will be copied.").format(file=dictionary_file))
-			else:
-				source_hash = self._calculate_file_hash(source_dict)
-				target_hash = self._calculate_file_hash(target_dict)
-				if source_hash != target_hash:
-					dictionary_needs_update = True
-					missing_files.append(dictionary_file)
-					log.info(_("Dictionary file {file} is outdated in NVDA. Will be copied.").format(file=dictionary_file))
-				else:
-					log.debug(_("Dictionary file {file} is up to date.").format(file=dictionary_file))
-		else:
-			log.warning(_("Dictionary file {file} not found in add-on. Skipping.").format(file=dictionary_file))
-
-		# Check other required files (only if missing)
-		for f in required_files:
-			if f == dictionary_file:
-				continue  # Already checked
-			source_file = os.path.join(addon_path, f)
-			target_file = os.path.join(nvda_root, f)
-			if not os.path.isfile(source_file):
-				log.warning(_("Required file not found in add-on: {file}").format(file=f))
-				continue
-			if not os.path.isfile(target_file):
-				missing_files.append(f)
-				log.info(_("File missing in NVDA: {file}.").format(file=f))
-
-		if missing_files:
-			log.info(_("Missing or outdated files in NVDA: {files}. Attempting to copy from add-on.").format(
-				files=", ".join(missing_files)))
-			
-			# Check if we need elevation
-			need_elevation = not test_write_permission(nvda_root)
-			copy_success = False
-			
-			if need_elevation:
-				log.info(_("Elevated permissions required. Attempting elevated copy."))
-				copy_success = copy_files_with_elevation(addon_path, nvda_root, missing_files)
-				
-				if not copy_success:
-					log.warning(_("Elevated copy failed. Synthesizer may use outdated dictionary or some files may be missing."))
-			else:
-				log.info(_("Normal permissions sufficient. Copying files."))
-				try:
-					for f in missing_files:
-						src = os.path.join(addon_path, f)
-						dst = os.path.join(nvda_root, f)
-						if os.path.isfile(src):
-							shutil.copy2(src, dst)
-							log.debug(_("Copied: {file}").format(file=f))
-					copy_success = True
-				except Exception as e:
-					log.error(_("Error copying files: {error}").format(error=e))
-					copy_success = False
-			if copy_success:
-				log.info(_("DeltaTalk files successfully copied/updated to {path}.").format(path=nvda_root))
-			else:
-				log.warning(_("Some files may not have been copied. Synthesizer functionality may be limited."))
-
-		# Verify DLL exists after copy attempt
 		if not os.path.isfile(dll_path):
 			log.error(_("DLL not found in: {path}").format(path=dll_path))
 			raise RuntimeError(_("DeltaTalk DLL not found. Check the installation of the add-on."))
-
-		# Set up DLL path
-		if hasattr(os, "add_dll_directory"):
-			os.add_dll_directory(nvda_root)
-		else:
-			original_path = os.environ["PATH"]
-			os.environ["PATH"] = nvda_root + os.pathsep + original_path
 
 		try:
 			self.dt = ctypes.WinDLL(dll_path)
@@ -303,10 +161,7 @@ class SynthDriver(SynthDriverBase):
 		except Exception as e:
 			log.error(_("Error loading DeltaTalk DLL in {path}: {error}").format(path=dll_path, error=e))
 			self.dt = None
-			raise RuntimeError(_("Failed to load DLL Dtalk32T.dll: {error}").format(error=e))
-		finally:
-			if not hasattr(os, "add_dll_directory"):
-				os.environ["PATH"] = original_path
+			raise RuntimeError(_("Failed to load DLL Dtalk32.dll: {error}").format(error=e))
 
 		if not self._initialize_tts():
 			raise RuntimeError(_("DeltaTalk synthesizer failed to initialize"))
@@ -317,34 +172,15 @@ class SynthDriver(SynthDriverBase):
 		except Exception as e:
 			log.error(_("Error managing symbol dictionary: {error}").format(error=e))
 
-		# Configure nvwave after TTS initialization
-		if self.instancia:
+				# Configure nvwave after TTS initialization if enabled in the settings
+		if self.instancia and self._use_nvwave:
 			self._setup_nvwave()
 			self._start_audio_thread()
-
-	def _calculate_file_hash(self, file_path):
-		"""Calculate SHA-256 hash of a file."""
-		try:
-			sha_hash = hashlib.sha256()
-			with open(file_path, "rb") as f:
-				for chunk in iter(lambda: f.read(4096), b""):
-					sha_hash.update(chunk)
-			return sha_hash.hexdigest()
-		except Exception as e:
-			log.error(_("Error calculating hash for {file}: {error}").format(file=file_path, error=e))
-			return None
 
 	def _initialize_tts(self):
 		if not self.dt:
 			log.error(_("Attempt to initialize TTS without the DLL loaded."))
 			return False
-		nvda_root = os.path.dirname(os.path.abspath(sys.executable))
-		log.debug(_("NVDA directory: {path}").format(path=nvda_root))
-		log.debug(_("Files in the folder: {files}").format(files=", ".join(os.listdir(nvda_root))))
-		original_cwd = os.getcwd()
-		log.debug(_("Original work directory: {path}").format(path=original_cwd))
-		os.chdir(nvda_root)
-		log.debug(_("Work directory changed to: {path}").format(path=os.getcwd()))
 		try:
 			log.debug(_("Starting TTS initialization"))
 			self.instancia = self.dt.TTSENG_Init(False, None, DSP_MODES["MULTIMEDIA"])
@@ -359,9 +195,6 @@ class SynthDriver(SynthDriverBase):
 			log.error(_("Error initializing TTS: {error}").format(error=e))
 			self.instancia = None
 			return False
-		finally:
-			os.chdir(original_cwd)
-			log.debug(_("Work directory restored"))
 
 	def _ensure_symbol_dictionary_active(self):
 		"""Ensures that the DeltaTalk symbol dictionary is active when the synthesizer is selected."""
@@ -370,7 +203,7 @@ class SynthDriver(SynthDriverBase):
 			if "deltatalk" not in current_dictionaries:
 				new_dictionaries = current_dictionaries[:] + ["deltatalk"]
 				config.conf["speech"]["symbolDictionaries"] = new_dictionaries
-				log.info(_("DeltaTalk symbol dictionary automatically activated"))
+				log.debug(_("DeltaTalk symbol dictionary automatically activated"))
 			else:
 				log.debug(_("DeltaTalk symbol dictionary already active"))
 		except Exception as e:
@@ -386,14 +219,14 @@ class SynthDriver(SynthDriverBase):
 			sample_rate = self._get_voice_sample_rate()
 			channels = 1
 			bits_per_sample = 16
-			output_device=config.conf["audio"]["outputDevice"]
+			output_device = config.conf["audio"]["outputDevice"]
 			self._nvwave_player = nvwave.WavePlayer(
 				channels=channels,
 				samplesPerSec=sample_rate,
 				bitsPerSample=bits_per_sample,
 				outputDevice=output_device,
 			)
-			log.info(_("nvwave configured: {rate}Hz, {channels} channels, {bits} bits, device: {device}").format(
+			log.debug(_("nvwave configured: {rate}Hz, {channels} channels, {bits} bits, device: {device}").format(
 				rate=sample_rate, channels=channels, bits=bits_per_sample, device=output_device))
 		except Exception as e:
 			log.error(_("Error configuring nvwave: {error}").format(error=e))
@@ -415,7 +248,7 @@ class SynthDriver(SynthDriverBase):
 				item = self._audio_queue.get(timeout=1.0)
 				if item is None:
 					break
-				text, index = item  # Now accepts (text, index)
+				text, index = item
 				log.debug(_("Processing text in audio worker: {text}, index: {index}").format(text=text, index=index))
 				# Split long texts into smaller pieces
 				if len(text) > 100:
@@ -451,7 +284,7 @@ class SynthDriver(SynthDriverBase):
 		
 		try:
 			log.debug(_("Attempting to generate audio for text: {text}, index: {index}").format(text=text, index=index))
-			buffer_size = 16384  # Increased for multi-blocks
+			buffer_size = 16384
 			encoded_text = text.encode("ansi", errors="replace")
 			log.debug(_("Starting multi-block audio generation, text length: {length}").format(length=len(encoded_text)))
 			
@@ -554,7 +387,7 @@ class SynthDriver(SynthDriverBase):
 			log.debug(_("Using direct playback for text: {text}").format(text=text))
 			encoded_text = text.encode("ansi", errors="replace")
 			play_result = self.dt.TTSENG_PlayText(self.instancia, c_char_p(encoded_text), True)
-			if play_result == -2:
+			if play_result == -2:  # TTS_BUSY
 				append_result = self.dt.TTSENG_AppendText(self.instancia, c_char_p(encoded_text))
 				if append_result != 0:
 					log.error(_("Error when attaching text: {error}").format(
@@ -577,7 +410,7 @@ class SynthDriver(SynthDriverBase):
 			return
 		if self._use_nvwave and self._nvwave_player and self._audio_thread_running:
 			try:
-				self._audio_queue.put((text, index))  # timeout=1.0
+				self._audio_queue.put((text, index))
 				log.debug(_("Text queued for nvwave: {text}, index: {index}").format(text=text, index=index))
 			except queue.Full:
 				log.warning(_("Audio queue full, using direct playback"))
@@ -696,7 +529,7 @@ class SynthDriver(SynthDriverBase):
 					log.error(_("Error configuring voice: {error} ({code})").format(
 						error=ERROR_CODES.get(result, {"friendly": _("Unknown error")})["friendly"], code=result))
 				else:
-					log.info(_("Voice changed to {voice}").format(voice=VOICES[value]))
+					log.debug(_("Voice changed to {voice}").format(voice=VOICES[value]))
 					self._reconfigure_nvwave_if_needed()
 
 	@property
@@ -708,7 +541,7 @@ class SynthDriver(SynthDriverBase):
 		if self._use_nvwave and self._nvwave_player:
 			current_rate = self._get_voice_sample_rate()
 			if hasattr(self._nvwave_player, 'samplesPerSec') and self._nvwave_player.samplesPerSec != current_rate:
-				log.info(_("Reconfiguring nvwave for new sample rate: {rate}Hz").format(rate=current_rate))
+				log.debug(_("Reconfiguring nvwave for new sample rate: {rate}Hz").format(rate=current_rate))
 				try:
 					self._nvwave_player.close()
 				except:
