@@ -93,6 +93,10 @@ Last but not least, here are our deepest thanks to Denis Renato da Costa and Mic
 
 ### Change history
 
+#### Version 0.4.1
+
+- This version only fixes a problem where the synthesizer couldn't be loaded because one of the main files was missing.
+
 #### Version 0.4
 
 - The functionality of the old "Pausing Information" add-on was integrated into DeltaTalk as a global plugin called "Virtual Vision Mode".

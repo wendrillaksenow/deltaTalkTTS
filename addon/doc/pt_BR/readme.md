@@ -93,6 +93,10 @@ Por último, mas não menos importante, agradecemos profundamente ao Denis Renat
 
 ### Histórico de alterações
 
+#### Versão 0.4.1
+
+- Esta versão apenas corrige um problema onde o sintetizador não podia ser carregado porque um dos arquivos principais estava ausente.
+
 #### Versão 0.4
 
 - A funcionalidade do antigo complemento "Informação Pausada" foi integrada ao DeltaTalk como um plugin global chamado "Modo Virtual Vision".

@@ -26,7 +26,7 @@ addon_info = {
 	"addon_description": _("""DeltaTalk is the first high-quality speech synthesizer available for the Portuguese language.
 This add-on implements NVDA compatibility with this synthesizer."""),
 	# version
-	"addon_version": "0.4",
+	"addon_version": "0.4.1",
 	# Author(s)
 	"addon_author": "Patrick Barboza <patrickbarboza774@gmail.com>, Wendrill Aksenow Brandão <wendrillaksenow@gmail.com",
 	# URL for the add-on documentation support
